@@ -4,17 +4,32 @@
       <v-app-bar-nav-icon @click="drawer=!drawer" class="mr-4"></v-app-bar-nav-icon>
 
       <div class="flex-grow-1 d-flex justify-center">
-        <img alt="TinyGS logo" src="../assets/logo.png">
+        <img alt="TinyGS logo" src="../assets/logo-large.svg">
       </div>
 
       <v-btn color="gray" text>
         <span>Sign Out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
-      <Login />
+      <!--<Login /> -->
     </v-app-bar >
-    <v-navigation-drawer v-model="drawer" app color="primary" class="darken-1">
-      <p>test</p>
+    <v-navigation-drawer disable-resize-watcher v-model="drawer" app color="primary" class="darken-1">
+      <div class="d-flex justify-center mt-3 mb-4">
+        <img alt="TinyGS logo" src="../assets/logo.svg">
+      </div>
+      <v-divider color="white"></v-divider>
+      <v-list dense>
+        <v-list-item-group flat class="white--text">
+          <v-list-item dark v-for="link in links" :key="link.text" router :to="link.path">
+            <v-list-item-icon>
+              <v-icon v-text="link.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="link.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
   </nav>
 </template>
@@ -25,7 +40,12 @@
 export default {
   data() {
     return {
-      drawer: false
+      drawer: false,
+      links: [
+        { text: 'Home', icon: 'mdi-clock', path: '/' },
+        { text: 'Stations', icon: 'mdi-account', path: '/stations' },
+        { text: 'Satellites', icon: 'mdi-flag', path: '/stellites' },
+      ],
     }
   }
 }
