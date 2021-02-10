@@ -1,13 +1,95 @@
 <template>
-  <div></div>
+  <div class="satellites">
+    <h1 class="subheading grey--text">Supported Satellites</h1>
+    <v-container class="my-5">
+      <v-layout row class="mx-3">
+        <v-btn small text color="grey" class="LoRa mx-1 text--darken-4" @click="filter(null)">
+          <v-icon left small>mdi-radio</v-icon>
+          <span class="caption text-lowercase">All</span>
+        </v-btn>
+        <v-btn small text color="grey" class="LoRa mx-1 text--darken-4" @click="filter('LoRa')">
+          <v-icon left small>mdi-radio</v-icon>
+          <span class="caption text-lowercase">LoRa</span>
+        </v-btn>
+        <v-btn small text color="grey" class="FSK mx-1 text--darken-4" @click="filter('FSK')">
+          <v-icon left small>mdi-radio</v-icon>
+          <span class="caption text-lowercase">FSK</span>
+        </v-btn>
+        <v-btn small text color="grey" class="GFSK9k6 mx-1 text--darken-4" @click="filter('GFSK9k6')">
+          <v-icon left small>mdi-radio</v-icon>
+          <span class="caption text-lowercase">GFSK9k6</span>
+        </v-btn>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 sm6 md4 lg3 v-for="sat in satellites" :key="sat.name">
+          <v-card class="text-center ma-4 rounded-lg">
+            <v-img height="250" :src="sat.images[0]"></v-img>
+            <!--<v-responsive class="pt-4">{{ sat.images[0] }}</v-responsive>-->
+            <v-card-text>
+              <div class="subheading">{{ sat.displayName }}</div>
+              <div class="grey--text">{{ sat.description }}</div>
+            </v-card-text>
+            <v-chip v-for="(conf,i) in sat.configurations" :key="i" :class="`${conf.mode} ma-2`">{{conf.mode}}@{{conf.freq}}</v-chip>
+            <v-card-actions>
+              
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
-export default {
+const axios = require("axios");
 
+export default {
+  name: 'Satellites',
+  data() {
+    return {
+      satellites: [],
+      origData: []
+    }
+  },
+  beforeMount() {
+    this.getSatellites();
+  },
+  methods: {
+    async getSatellites() {
+      const { data } = await axios.get("https://api.tinygs.com/v1/satellites");
+      console.log(data);
+      this.origData = data;
+      this.satellites = data;
+    },
+    filter(mode) {
+      console.log(mode)
+      if (mode === null) {
+        this.satellites = this.origData;
+        return
+      }
+
+      this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => conf.mode == mode).length > 0)
+    }
+  },
+  
 }
 </script>
 
 <style>
+.subheading {
+  margin: 10px 20px;
+}
+
+.LoRa {
+  background: #3cd1c2 !important;
+}
+
+.FSK {
+  background: #ffaa2c !important;
+}
+
+.GFSK9k6 {
+  background: #f83e70 !important;
+}
 
 </style>
