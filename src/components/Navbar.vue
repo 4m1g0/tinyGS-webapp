@@ -4,10 +4,10 @@
       <v-app-bar-nav-icon @click="drawer=!drawer" class="mr-4"></v-app-bar-nav-icon>
 
       <div class="flex-grow-1 d-flex justify-center">
-        <img alt="TinyGS logo" src="../assets/logo-large.svg">
+        <v-img contain transition="fade-transition" max-height="60" alt="TinyGS logo" src="../assets/logo.svg" />
       </div>
 
-      <v-btn color="gray" text>
+      <v-btn color="primary" class="lighten-1" depressed>
         <span>Sign Out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -15,7 +15,7 @@
     </v-app-bar >
     <v-navigation-drawer disable-resize-watcher v-model="drawer" app color="primary" class="darken-1">
       <div class="d-flex justify-center mt-3 mb-4">
-        <img alt="TinyGS logo" src="../assets/logo.svg">
+        <v-img contain max-height="90" transition="scale-transition" alt="TinyGS logo" src="../assets/logo.svg" />
       </div>
       <v-divider color="white"></v-divider>
       <v-list dense>
@@ -42,9 +42,9 @@ export default {
     return {
       drawer: false,
       links: [
-        { text: 'Home', icon: 'mdi-clock', path: '/' },
-        { text: 'Stations', icon: 'mdi-account', path: '/stations' },
-        { text: 'Satellites', icon: 'mdi-flag', path: '/stellites' },
+        { text: 'Home', icon: 'mdi-home', path: '/' },
+        { text: 'Stations', icon: '$station', path: '/stations' },
+        { text: 'Satellites', icon: '$satellite', path: '/satellites' },
       ],
     }
   }
