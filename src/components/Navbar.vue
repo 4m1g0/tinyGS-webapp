@@ -4,7 +4,16 @@
       <v-app-bar-nav-icon @click="drawer=!drawer" class="mr-4"></v-app-bar-nav-icon>
 
       <div class="flex-grow-1 d-flex justify-center">
-        <v-img contain transition="fade-transition" max-height="60" alt="TinyGS logo" src="../assets/logo.svg" />
+        <div class="d-flex">
+          <v-img contain transition="fade-transition" max-height="60" alt="TinyGS logo" src="../assets/logo.svg" />
+          <v-chip
+            class="ma-2 text-button font-weight-black"
+            color="green"
+            text-color="white"
+          >
+            BETA
+          </v-chip>
+        </div>
       </div>
 
       <v-btn color="primary" class="lighten-1" depressed>
