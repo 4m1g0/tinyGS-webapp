@@ -59,13 +59,15 @@ const axios = require("axios");
 //import LineChart from '../charts/LineChart.js'
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 import NorbiPacket from '../components/packets/NorbiPacket.vue'
+import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
 
 export default {
   name: "Satellite",
   components: {
     //LineChart,
     NorbiTelemetry,
-    NorbiPacket
+    NorbiPacket,
+    UndefinedPacket
   },
   data() {
     return {

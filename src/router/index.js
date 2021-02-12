@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Satellites from '../views/Satellites.vue'
 import Satellite from '../views/Satellite.vue'
 import Packet from '../views/Packet.vue'
+import Packets from '../views/Packets.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     path: '/packet/:id',
     name: 'Packet',
     component: Packet
+  },
+  {
+    path: '/packets',
+    name: 'Packets',
+    component: Packets
   }
 ]
 

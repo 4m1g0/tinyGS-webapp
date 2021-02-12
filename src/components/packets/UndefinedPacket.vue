@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12 sm6 md6 lg3 xl2>
-      <div class="caption grey--text">Time</div>
+      <h3><v-icon>$satelliteDark</v-icon> {{packet.satellite}}</h3>
       <div>{{`${dateFormat(packet.serverTime)} (${dateSince(packet.serverTime)})`}}</div>
     </v-flex>
     <v-flex xs6 sm3 md3 lg2 xl1>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: "UndefinedPacket",
   props: [
