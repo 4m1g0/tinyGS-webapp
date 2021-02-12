@@ -36,14 +36,13 @@
       </v-flex>-->
       <!-- Packets -->
       <v-flex xs12 sm12 pa-4>
-        <v-card flat class="pa-7">
-          <v-layout row wrap>
-            <v-flex xs12 md6>
-              <div class="caption grey--text">Date</div>
-              <div>Actual date</div>
-            </v-flex>
-          </v-layout>
-        </v-card>
+        <div v-for="packet in packets" :key="packet.id"> 
+          <v-card flat class="pa-7 clickable" :href="`https://tinygs.com/packet/${packet.id}`">
+            <!--<NorbiPacket :packet="packet"/>-->
+            <component v-bind:is="`${packet.satellite}Packet`" :packet="packet"></component>
+          </v-card>
+          <v-divider></v-divider>
+        </div>
       </v-flex>
     </v-layout>
     <div v-else> <!-- loading spinner -->
@@ -59,16 +58,19 @@
 const axios = require("axios");
 //import LineChart from '../charts/LineChart.js'
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
+import NorbiPacket from '../components/packets/NorbiPacket.vue'
 
 export default {
   name: "Satellite",
   components: {
     //LineChart,
-    NorbiTelemetry
+    NorbiTelemetry,
+    NorbiPacket
   },
   data() {
     return {
       satellite: null,
+      packets: null,
       datacollection: null,
       options: {
         scales: {
@@ -82,6 +84,7 @@ export default {
   },
   beforeMount() {
     this.getSatellite()
+    this.getPackets()
     this.fillData()
   },
   methods: {
@@ -89,6 +92,11 @@ export default {
       const { data } = await axios.get(`https://api.tinygs.com/v1/satellite/${this.$route.params.name}`);
       console.log(data);
       this.satellite = data;
+    },
+    async getPackets() {
+      const { data } = await axios.get(`https://api.tinygs.com/v1/packets?satellite=${this.$route.params.name}`);
+      console.log(data);
+      this.packets = data;
     },
     fillData () {
       this.datacollection = {
@@ -113,4 +121,7 @@ export default {
 
 <style>
 
+.clickable:hover {
+  right: -1px;
+}
 </style>

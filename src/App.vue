@@ -17,6 +17,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue';
+//const axios = require("axios");
 
 export default {
   name: 'App',
@@ -32,6 +33,7 @@ export default {
   }),
   beforeMount() {
     if (this.$route.query.loginToken && this.$route.query.userId) {
+
       // put authenticate and save token and remove query string -> this.$router.push(this.$route.path)
     }
     
