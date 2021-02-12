@@ -47,6 +47,9 @@
 
 
 export default {
+  props: [
+    "user"
+  ],
   data() {
     return {
       drawer: false,

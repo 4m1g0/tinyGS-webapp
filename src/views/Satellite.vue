@@ -6,9 +6,16 @@
       <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1"> 
         <h1 class="heading">{{ satellite.displayName }}</h1>
         <p v-html="satellite.description"></p>
-        <v-card class="mr-5 pa-4 grey--text text--darken-3" style="overflow:auto">
+        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;">
           1 40378U 15003C   21041.25088245  .00002749  00000-0  10509-3 0  9993<br>
           2 40378  99.0833 156.2258 0119588 238.5994 120.3496 15.21428593333450
+        </v-card>
+        <!-- Telemetry -->
+        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
+          <h2>Last telemetry</h2>
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            <NorbiTelemetry :data="satellite"/>
+          </v-card-text>
         </v-card>
       </v-flex>
       <!-- images -->
@@ -19,32 +26,25 @@
                 <v-img :src="image" height="300px"></v-img>
               </v-card>
           </v-flex>
-      </v-layout>
+        </v-layout>
       </v-flex>
-      <!-- Telemetry -->
-      <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1">
-        <v-card class="ma-2 pa-4 grey--text text--darken-3">
-          <h2>Last telemetry</h2>
-          <v-card-text class="grey--text text--darken-3 mx-auto">
-                <div v-if="'raw' in satellite.lastTelemetry">
-                    {{satellite.lastTelemetry.payload.raw}}<br />
-                </div>
-                <div v-else>
-                  📻 {{satellite.lastTelemetry.payload.brk_transmitter_power_active}}W  🌡 {{satellite.lastTelemetry.payload.brk_temp_active}}ºC <br />
-                  🛰 {{satellite.lastTelemetry.payload.ses_voltage}}mV  🔌 {{satellite.lastTelemetry.payload.ses_total_power_load}}mW <br />
-                  ☀️ {{satellite.lastTelemetry.payload.ses_total_generated_power}}mW  🔋️{{satellite.lastTelemetry.payload.ses_charge_level_m_ah}}mAh  ⛽️{{satellite.lastTelemetry.payload.ses_total_charging_power}}mW  <br />
-                  🌡 Board PMM: {{satellite.lastTelemetry.payload.ses_median_pmm_temp}}ºC   PAM: {{satellite.lastTelemetry.payload.ses_median_pam_temp}}ºC   PDM: {{satellite.lastTelemetry.payload.ses_median_pdm_temp}}ºC <br />
-                  🌡 Solar Array X-: {{satellite.lastTelemetry.payload.ses_median_panel_x_temp_negative}}ºC  Solar Array X+: {{satellite.lastTelemetry.payload.ses_median_panel_x_temp_positive}}ºC <br />
-                  BRK Reset: {{satellite.lastTelemetry.payload.brk_restarts_count_active}}   Frame: {{satellite.lastTelemetry.payload.frame_number}} <br />
-                </div>   
-          </v-card-text>
-        </v-card>
-      </v-flex>
+      
       <!-- chart -->
       <!--<v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1">
         <line-chart height="200" width="400" v-if="datacollection" :chart-data="datacollection" :options="options"></line-chart>
         <button @click="fillData()">Randomize</button>
       </v-flex>-->
+      <!-- Packets -->
+      <v-flex xs12 sm12 pa-4>
+        <v-card flat class="pa-7">
+          <v-layout row wrap>
+            <v-flex xs12 md6>
+              <div class="caption grey--text">Date</div>
+              <div>Actual date</div>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
     </v-layout>
     <div v-else> <!-- loading spinner -->
       <v-row class="fill-height ma-16" align="center" justify="center">
@@ -58,12 +58,13 @@
 <script>
 const axios = require("axios");
 //import LineChart from '../charts/LineChart.js'
-
+import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 
 export default {
   name: "Satellite",
   components: {
-    //LineChart
+    //LineChart,
+    NorbiTelemetry
   },
   data() {
     return {
