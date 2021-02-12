@@ -22,7 +22,7 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="sat in satellites" :key="sat.name">
-          <v-card class="text-center ma-4 rounded-lg clickable" :href="`satellite/${sat.name}`">
+          <v-card class="text-center ma-4 rounded-lg clickable" :to="`satellite/${sat.name}`">
             <v-img height="250" :src="sat.images[0]">
               <template v-slot:placeholder>
                 <v-row

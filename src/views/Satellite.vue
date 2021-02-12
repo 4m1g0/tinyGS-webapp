@@ -14,7 +14,7 @@
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
           <h2>Last telemetry</h2>
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            <NorbiTelemetry :data="satellite"/>
+            <NorbiTelemetry :data="satellite.lastTelemetry"/>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -37,9 +37,9 @@
       <!-- Packets -->
       <v-flex xs12 sm12 pa-4>
         <div v-for="packet in packets" :key="packet.id"> 
-          <v-card flat class="pa-7 clickable" :href="`https://tinygs.com/packet/${packet.id}`">
+          <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
             <!--<NorbiPacket :packet="packet"/>-->
-            <component v-bind:is="`${packet.satellite}Packet`" :packet="packet"></component>
+            <component v-bind:is="`${packet.satellite}Packet` || UndefinedPacket" :packet="packet"></component>
           </v-card>
           <v-divider></v-divider>
         </div>

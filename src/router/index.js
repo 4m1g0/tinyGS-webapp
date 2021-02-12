@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Satellites from '../views/Satellites.vue'
 import Satellite from '../views/Satellite.vue'
+import Packet from '../views/Packet.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/satellite/:name',
     name: 'Satellite',
     component: Satellite
+  },
+  {
+    path: '/packet/:id',
+    name: 'Packet',
+    component: Packet
   }
 ]
 
