@@ -1,6 +1,6 @@
 <template>
   <div class="satellites">
-    <h1 class="subheading grey--text">Supported Satellites</h1>
+    <!--<h1 class="subheading grey--text">Satellites</h1>-->
     <v-container class="my-5">
       <v-layout row class="mx-3">
         <v-btn small text color="grey" class="LoRa mx-1 text--darken-4" @click="filter(null)">

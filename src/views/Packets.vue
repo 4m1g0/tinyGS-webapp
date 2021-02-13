@@ -1,5 +1,6 @@
 <template>
   <div class="packets">
+  <h1 class="subheading grey--text">Last packets</h1>
   <v-container>
     <v-layout row wrap v-if="packets">
       <v-flex xs12 sm12 pa-4>

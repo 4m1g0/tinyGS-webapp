@@ -57,6 +57,7 @@ export default {
         { text: 'Home', icon: 'mdi-home', path: '/' },
         { text: 'Stations', icon: '$station', path: '/stations' },
         { text: 'Satellites', icon: '$satellite', path: '/satellites' },
+        { text: 'Packets', icon: 'mdi-file-document-outline', path: '/packets' },
       ],
     }
   }
