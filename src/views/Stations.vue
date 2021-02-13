@@ -73,7 +73,6 @@ export default {
       this.stations = data;
     },
     dateSince(time) {
-      console.log(time)
       return moment(time).fromNow()
     },
   }

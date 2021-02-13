@@ -29,7 +29,7 @@
               </v-flex>
               <v-flex pa-2 xs6 sm6 md6 lg3 xl3>
                 <div class="caption grey--text">Test mode</div>
-                <div ><v-icon>{{station.test?"mdi-alert-outline":""}}</v-icon></div>
+                <div >{{station.test?"ON":"OFF"}}</div>
               </v-flex>
               <v-flex pa-2 xs6 sm6 md6 lg3 xl3>
                 <div class="caption grey--text">Confirmed packets</div>
@@ -38,6 +38,9 @@
               <v-flex pa-2 xs6 sm6 md6 lg3 xl3>
                 <div class="caption grey--text">Status</div>
                 <strong v-html="(station.status==1) ? '<span class=\'green--text\'>Online</span>' : '<span class=\'red--text\'>Offline</span>'"></strong>
+              </v-flex>
+              <v-flex pa-2 xs6 sm6 md6 lg3 xl3 v-if="isCurrentUser(station.userId)">
+                <EditStation />
               </v-flex>
               
             </v-layout>
@@ -78,12 +81,14 @@
 const axios = require("axios");
 import NorbiPacket from '../components/packets/NorbiPacket.vue'
 import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
+import EditStation from '../components/EditStation.vue'
 import moment from 'moment'
 
 export default {
   components: {
     NorbiPacket,
-    UndefinedPacket
+    UndefinedPacket,
+    EditStation
   },
   data() {
     return {
@@ -110,6 +115,9 @@ export default {
       console.log(time)
       return moment(time).fromNow()
     },
+    isCurrentUser(user) {
+      return localStorage.userId == user
+    }
   }
 }
 </script>
