@@ -1,6 +1,5 @@
 <template>
   <div class="stations">
-    <!--<h1 class="subheading grey--text">Currently active stations</h1>-->
     <v-container>
       <v-layout row wrap v-if="stations">
         <v-flex xs12 sm12 pa-4>

@@ -6,6 +6,7 @@ import Satellite from '../views/Satellite.vue'
 import Packet from '../views/Packet.vue'
 import Packets from '../views/Packets.vue'
 import Station from '../views/Station.vue'
+import User from '../views/User.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/station/:id',
     name: 'Station',
     component: Station
+  },
+  {
+    path: '/user/:id',
+    name: 'User',
+    component: User
   }
 ]
 
