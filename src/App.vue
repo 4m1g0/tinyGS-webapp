@@ -35,6 +35,10 @@ export default {
     }
   },
   mounted() {
+    if ("userId" in localStorage) {
+        this.user = localStorage.userId
+    }
+
     if (this.$route.query.loginToken && this.$route.query.userId) {
       this.login();
     }
@@ -42,8 +46,8 @@ export default {
   methods: {
     async login() {
       if ("userId" in localStorage) {
-        this.user = localStorage.userId
         this.$router.push(`/user/${this.user}`)
+        return
       }
       let params = {
         loginToken: this.$route.query.loginToken,

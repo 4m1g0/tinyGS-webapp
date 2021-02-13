@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <v-btn color="primary" class="lighten-1" depressed>
+      <v-btn @click="logout()" color="primary" class="lighten-1" depressed v-if="user">
         <span>Sign Out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -59,6 +59,13 @@ export default {
         { text: 'Satellites', icon: '$satellite', path: '/satellites' },
         { text: 'Packets', icon: 'mdi-file-document-outline', path: '/packets' },
       ],
+    }
+  },
+  methods: {
+    logout(){
+      localStorage.removeItem("userId")
+      localStorage.removeItem("sessionToken")
+      this.user = null
     }
   }
 }
