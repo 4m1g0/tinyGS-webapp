@@ -9,7 +9,7 @@
   <div>{{`${packet.mode}@${packet.freq}`}}</div>
   </v-flex>
   <v-flex xs6 sm3 md3 lg1 xl1>
-  <div class="caption grey--text">Recived by</div>
+  <div class="caption grey--text">Received by</div>
   <div>{{`${packet.stationNumber} stations`}}</div>
   </v-flex>
   <v-flex xs12 sm12 md12 lg6 xl4 v-if="packet.parsed && !packet.parsed.payload.raw">

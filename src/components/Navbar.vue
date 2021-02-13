@@ -16,6 +16,9 @@
         </div>
       </div>
 
+      <v-btn icon class="mr-2" v-if="user">
+        <v-icon @click="$router.push(`/user/${user}`)" large>mdi-account-circle</v-icon>
+      </v-btn>
       <v-btn @click="logout()" color="primary" class="lighten-1" depressed v-if="user">
         <span>Sign Out</span>
         <v-icon right>mdi-exit-to-app</v-icon>
@@ -65,7 +68,7 @@ export default {
     logout(){
       localStorage.removeItem("userId")
       localStorage.removeItem("sessionToken")
-      this.user = null
+      this.$emit("logout", true)
     }
   }
 }

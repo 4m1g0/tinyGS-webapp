@@ -9,7 +9,7 @@
       <div>{{`${packet.mode}@${packet.freq}`}}</div>
     </v-flex>
     <v-flex xs6 sm3 md3 lg1 xl1>
-      <div class="caption grey--text">Recived by</div>
+      <div class="caption grey--text">Received by</div>
       <div>{{`${packet.stationNumber} stations`}}</div>
     </v-flex>
     <v-flex class="d-none d-xl-inline-block xl4">

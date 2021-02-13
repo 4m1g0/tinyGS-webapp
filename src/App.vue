@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Navbar :user="user" />
+    <Navbar v-on:logout="user=null" :user="user" />
     <v-main class="grey lighten-3">
       <router-view v-if="!$route.query.loginToken || !$route.query.userId"></router-view>
 
