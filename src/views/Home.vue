@@ -104,7 +104,7 @@ export default {
       links: [
         {icon:"mdi-github", name:' GitHub',url:"https://github.com/G4lile0/tinyGS"},
         {icon:"mdi-file-document-multiple-outline", name:' Wiki',url:"https://github.com/G4lile0/tinyGS/wiki"},
-        {icon:"mdi-map-marker-question-outline", name:' FAQ',url:"https://github.com/G4lile0/tinyGS/wiki/Troubleshooting"},
+        {icon:"mdi-map-marker-question-outline", name:' FAQ',url:"https://github.com/G4lile0/tinyGS/wiki/FAQ"},
         {icon:"mdi-forum", name:' Telegram',url:"https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q"},
       ]
     }
