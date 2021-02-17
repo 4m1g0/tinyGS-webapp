@@ -6,7 +6,7 @@
       <v-flex xs12 sm12 pa-4>
         <div v-for="packet in packets" :key="packet.id"> 
           <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
-            <component v-bind:is="`${packet.satellite}Packet` || UndefinedPacket" :packet="packet"></component>
+            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
           </v-card>
           <v-divider></v-divider>
         </div>
@@ -44,7 +44,15 @@ export default {
       console.log(data);
       this.packets = data;
     },
-  }
+    getComponent(sat) {
+      if (["NorbiPacket"].includes(`${sat}Packet`)) {
+        return `${sat}Packet`
+      }
+      else {
+        return "UndefinedPacket"
+      }
+    }
+  },
   
 }
 </script>

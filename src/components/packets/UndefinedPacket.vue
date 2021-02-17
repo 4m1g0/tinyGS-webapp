@@ -12,9 +12,9 @@
       <div class="caption grey--text">Received by</div>
       <div>{{`${packet.stationNumber} stations`}}</div>
     </v-flex>
-    <v-flex class="d-none d-xl-inline-block xl4">
+    <v-flex class="d-none d-xl-inline-block xl8">
       <div class="caption grey--text">Data</div>
-      <div>{{data.raw}}</div>
+      <div>{{toHex(packet.raw)}}</div>
     </v-flex>
   </v-layout>
 </template>
@@ -34,6 +34,19 @@ export default {
     dateSince(time) {
       return moment(time).fromNow()
     },
+    toHex(data){
+      if (data.startsWith("VGlueUdTLXRlc3Q"))
+        return "TinyGS Test Packet"
+
+      var decodedData = Buffer.from(data, 'base64')
+      let packetData = "";
+      for (var i = 0; i < decodedData.length; i++) {
+          if (decodedData[i] <= 0xF) { packetData += "0"; }
+          else { packetData += ""; }
+          packetData += decodedData[i].toString(16) + "";
+      }
+      return packetData;
+    }
   }
 }
 </script>

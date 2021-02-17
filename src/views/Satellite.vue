@@ -39,7 +39,7 @@
         <div v-for="packet in packets" :key="packet.id"> 
           <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
             <!--<NorbiPacket :packet="packet"/>-->
-            <component v-bind:is="`${packet.satellite}Packet` || UndefinedPacket" :packet="packet"></component>
+            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
           </v-card>
           <v-divider></v-divider>
         </div>
@@ -116,6 +116,14 @@ export default {
     },
     getRandomInt () {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+    },
+    getComponent(sat) {
+      if (["NorbiPacket"].includes(`${sat}Packet`)) {
+        return `${sat}Packet`
+      }
+      else {
+        return "UndefinedPacket"
+      }
     }
   }
 }

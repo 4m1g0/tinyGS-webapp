@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Navbar v-on:logout="user=null" :user="user" />
-    <v-main class="grey lighten-3">
+    <v-main class="grey lighten-3 " style="height:100%;">
       <router-view v-if="!$route.query.loginToken || !$route.query.userId"></router-view>
 
       <v-row v-else class="fill-height ma-0" align="center" justify="center">

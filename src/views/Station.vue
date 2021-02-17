@@ -40,9 +40,8 @@
                 <strong v-html="(station.status==1) ? '<span class=\'green--text\'>Online</span>' : '<span class=\'red--text\'>Offline</span>'"></strong>
               </v-flex>
               <v-flex pa-2 xs6 sm6 md6 lg3 xl3 v-if="isCurrentUser(station.userId)">
-                <EditStation />
+                <EditStation v-on:sent="configSent()" :station="$route.params.id" :config="station.modem_conf" />
               </v-flex>
-              
             </v-layout>
           </v-card-text>
         </v-card>
@@ -61,7 +60,7 @@
         <div v-for="packet in packets" :key="packet.id"> 
           <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
             <!--<NorbiPacket :packet="packet"/>-->
-            <component v-bind:is="`${packet.satellite}Packet` || UndefinedPacket" :packet="packet"></component>
+            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
           </v-card>
           <v-divider></v-divider>
         </div>
@@ -117,6 +116,17 @@ export default {
     },
     isCurrentUser(user) {
       return localStorage.userId == user
+    },
+    configSent(){
+      this.getStation()
+    },
+    getComponent(sat) {
+      if (["NorbiPacket"].includes(`${sat}Packet`)) {
+        return `${sat}Packet`
+      }
+      else {
+        return "UndefinedPacket"
+      }
     }
   }
 }
