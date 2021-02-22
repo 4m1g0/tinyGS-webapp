@@ -1,18 +1,84 @@
 <template>
-    
-
-    <v-row class="fill-height ma-0" align="center" justify="center">
-
-          <h2>Sorry! We are currently working on this view...</h2>
+<div class="packet">
+  <v-container>
+    <v-layout row wrap v-if="packet">
+      <!-- description -->
+      <v-flex mt-4 ml-4 xs12 class="grey--text text--darken-1"> 
+        <h1 class="heading">{{ packet.name }}</h1>
+      </v-flex>
+      <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         
+        <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            <h1 class="ma-2 mb-5">{{packet.satDisplayName}}</h1>
+            <div>Received on: {{formatDate(packet.serverTime)}}</div>
+            <div v-if="packet.mode == 'FSK'">
+              <i>{{packet.mode}}</i> {{packet.freq}} Mhz  BR: {{packet.bitrate}}  FD: {{packet.freqDev}}  BW: {{packet.rxBw}} kHz
+            </div>
+            <div v-else>
+              <i>{{packet.mode}}</i> {{packet.freq}} Mhz  SF: {{packet.sf}}  CR: {{packet.cr}}  BW: {{packet.bw}} kHz
+            </div>
+            <br>
+            <NorbiTelemetry :data="packet.parsed"/>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
+        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            We are still working on this component ;)
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      
+      <!-- Packets -->
+      <v-flex xs12 sm12 pa-4>
+        <div v-for="station in packet.stations" :key="`${station.name}@${station.userId}`"> 
+          <StationRx :station="station"/>
+          <v-divider></v-divider>
+        </div>
+      </v-flex>
+      
+    </v-layout>
+    <div v-else> <!-- loading spinner -->
+      <v-row class="fill-height ma-16" align="center" justify="center">
+        <v-progress-circular indeterminate color="grey"></v-progress-circular>
       </v-row>
-
-  
+    </div>
+  </v-container>
+</div>
 </template>
 
 <script>
+const axios = require("axios");
+import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
+import StationRx from '../components/StationRx.vue'
+import moment from 'moment'
+
 export default {
-  name: "Packet"
+  name: "Packet",
+  components: {
+    NorbiTelemetry,
+    StationRx
+  },
+  data() {
+    return {
+      packet: null,
+    }
+  },
+  beforeMount() {
+    this.getPacket()
+  },
+  methods: {
+    async getPacket() {
+      const { data } = await axios.get(`https://api.tinygs.com/v1/packet/${this.$route.params.id}`);
+      console.log(data);
+      this.packet = data;
+    },
+    formatDate(time) {
+      return moment(time).format('LLL')
+    }
+  }
 }
 </script>
 
