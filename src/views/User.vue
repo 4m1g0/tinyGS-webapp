@@ -101,5 +101,12 @@ export default {
 </script>
 
 <style>
+.online {
+  border-left: 4px solid green !important;
+}
+
+.offline {
+  border-left: 4px solid red !important;
+}
 
 </style>
