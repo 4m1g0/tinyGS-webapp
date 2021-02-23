@@ -11,7 +11,7 @@
             <v-card class="pa-2 ma-2 rounded-xl stats-card">
               <v-card-text>
                 <div class="text-center display-1 "><v-icon x-large class="display-3 pb-3">mdi-account-group</v-icon></div>
-                <div class="text-center display-2 ">952</div>
+                <div class="text-center display-2 ">{{statistics.members}}</div>
                 <div class="subheading font-weight-bold text-center">Members</div>
               </v-card-text>
             </v-card>
@@ -22,7 +22,7 @@
             <v-card class="pa-2 ma-2 rounded-xl stats-card">
               <v-card-text>
                 <div class="text-center display-1"><v-icon x-large class="display-3 pb-3">mdi-satellite-uplink</v-icon></div>
-                <div class="text-center display-2">214</div>
+                <div class="text-center display-2">{{statistics.stations}}</div>
                 <div class="subheading font-weight-bold text-center">Active stations</div>
               </v-card-text>
             </v-card>
@@ -33,7 +33,7 @@
             <v-card class="pa-2 ma-2 rounded-xl stats-card">
               <v-card-text>
                 <div class="text-center display-1 "><v-icon x-large class="display-3 pb-3">mdi-file-document-outline</v-icon></div>
-                <div class="text-center display-2">25890</div>
+                <div class="text-center display-2">{{statistics.packets + 10000}}</div>
                 <div class="subheading font-weight-bold text-center">Received packets</div>
               </v-card-text>
             </v-card>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+const axios = require("axios");
 
 export default {
   name: 'Home',
@@ -106,12 +106,21 @@ export default {
         {icon:"mdi-file-document-multiple-outline", name:' Wiki',url:"https://github.com/G4lile0/tinyGS/wiki"},
         {icon:"mdi-map-marker-question-outline", name:' FAQ',url:"https://github.com/G4lile0/tinyGS/wiki/FAQ"},
         {icon:"mdi-forum", name:' Telegram',url:"https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q"},
-      ]
+      ],
+      statistics: {}
     }
+  },
+  beforeMount(){
+    this.getStatistics()
   },
   methods: {
     navigate(l){
       window.location = l;
+    },
+    async getStatistics() {
+      const { data } = await axios.get("https://api.tinygs.com/v1/statistics");
+      console.log(data);
+      this.statistics = data;
     }
   }
 
