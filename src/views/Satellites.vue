@@ -42,8 +42,10 @@
             <v-card-text>
               <div class="subheading">{{ sat.displayName }}</div>
               <div class="grey--text">{{ sat.description }}</div>
+              <div class="mt-3" v-if="sat.status=='Future'"><strong>Launch Date:</strong> {{formatLaunchDate(sat.launchDate)}}</div>
             </v-card-text>
             <v-chip v-for="(conf,i) in sat.configurations" :key="i" :class="`${conf.mode} ma-2`">{{conf.mode}}@{{conf.freq}}</v-chip>
+            <v-chip :class="`${sat.status} ma-2`">{{sat.status}}</v-chip>
             <v-card-actions>
               
             </v-card-actions>
@@ -56,6 +58,7 @@
 
 <script>
 const axios = require("axios");
+import moment from 'moment'
 
 export default {
   name: 'Satellites',
@@ -83,6 +86,9 @@ export default {
       }
 
       this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => conf.mode == mode).length > 0)
+    },
+    formatLaunchDate(date){
+      return moment(date).format('lll');
     }
   },
   

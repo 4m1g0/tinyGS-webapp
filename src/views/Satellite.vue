@@ -6,12 +6,20 @@
       <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1"> 
         <h1 class="heading">{{ satellite.displayName }}</h1>
         <p v-html="satellite.description"></p>
+        <ul>
+          <li><strong>Status:</strong> {{satellite.status}}</li>
+          <li><strong>Launch Date:</strong> {{formatLaunchDate(satellite.launchDate)}}</li>
+        </ul>
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;">
-          1 40378U 15003C   21041.25088245  .00002749  00000-0  10509-3 0  9993<br>
-          2 40378  99.0833 156.2258 0119588 238.5994 120.3496 15.21428593333450
+          <h3>TLEs</h3>
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            {{satellite.tle[0]}}<br>
+            {{satellite.tle[1]}}<br>
+            {{satellite.tle[2]}}
+          </v-card-text>
         </v-card>
         <!-- Telemetry -->
-        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
+        <v-card v-if="satellite.lastTelemetry" flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
           <h2>Last telemetry</h2>
           <v-card-text class="grey--text text--darken-3 mx-auto">
             <NorbiTelemetry :data="satellite.lastTelemetry"/>
@@ -35,13 +43,18 @@
         <button @click="fillData()">Randomize</button>
       </v-flex>-->
       <!-- Packets -->
-      <v-flex xs12 sm12 pa-4>
-        <div v-for="packet in packets" :key="packet.id"> 
+      <v-flex xs12 sm12 pa-4 v-if="packets && packets.length > 0">
+        <div  v-for="packet in packets" :key="packet.id"> 
           <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
             <!--<NorbiPacket :packet="packet"/>-->
             <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
           </v-card>
           <v-divider></v-divider>
+        </div>
+      </v-flex>
+      <v-flex xs12 sm12 pa-4 v-else>
+        <div class="text-center grey--text text--darken-3">
+          No packets yet.
         </div>
       </v-flex>
     </v-layout>
@@ -60,6 +73,7 @@ const axios = require("axios");
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 import NorbiPacket from '../components/packets/NorbiPacket.vue'
 import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
+import moment from 'moment'
 
 export default {
   name: "Satellite",
@@ -124,6 +138,9 @@ export default {
       else {
         return "UndefinedPacket"
       }
+    },
+    formatLaunchDate(date){
+      return moment(date).format('lll');
     }
   }
 }
