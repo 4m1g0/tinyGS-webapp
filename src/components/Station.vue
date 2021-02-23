@@ -26,10 +26,13 @@
       <div class="text-center">{{station.test?"ON":"OFF"}}</div>
     </v-flex>
     <v-flex xs6 sm4 md3 lg1 xl1>
+      <div class="caption grey--text text-center">Telemetry packets</div>
+      <div class="text-center">{{station.telemetryPackets}}</div>
+    </v-flex>
+    <v-flex xs6 sm4 md3 lg1 xl1>
       <div class="caption grey--text text-center">Confirmed packets</div>
       <div class="text-center">{{station.confirmedPackets}}</div>
     </v-flex>
-
   </v-layout>
 </v-card>
 </template>
