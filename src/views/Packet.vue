@@ -24,6 +24,14 @@
         </v-card>
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
+        <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            <h2 class="ma-2 mb-5">Hexadecimal view</h2>
+            <HexView :raw="base64ToArrayBuffer(packet.raw)"/>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
             We are still working on this component ;)
@@ -53,13 +61,15 @@
 const axios = require("axios");
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 import StationRx from '../components/StationRx.vue'
+import HexView from '../components/HexView.vue'
 import moment from 'moment'
 
 export default {
   name: "Packet",
   components: {
     NorbiTelemetry,
-    StationRx
+    StationRx,
+    HexView
   },
   data() {
     return {
@@ -77,6 +87,15 @@ export default {
     },
     formatDate(time) {
       return moment(time).format('LLL')
+    },
+    base64ToArrayBuffer(base64) {
+        var binary_string = atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
     }
   }
 }

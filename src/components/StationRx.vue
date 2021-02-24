@@ -11,7 +11,7 @@
     </v-flex>
     <v-flex xs6 sm4 md4 lg2 xl2>
       <div class="caption grey--text text-center">🕒 Time</div>
-      <div class="text-center">{{formatTime(station.GSTime)}}</div>
+      <div class="text-center">{{formatTime(station.usec_time)}}</div>
     </v-flex>
     <v-flex xs6 sm4 md3 lg1 xl1>
       <div class="caption grey--text text-center">📶 RSSI</div>
