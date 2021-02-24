@@ -22,8 +22,6 @@
             <NorbiTelemetry :data="packet.parsed"/>
           </v-card-text>
         </v-card>
-      </v-flex>
-      <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
             <h2 class="ma-2 mb-5">Hexadecimal view</h2>
@@ -33,9 +31,7 @@
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
-          <v-card-text class="grey--text text--darken-3 mx-auto">
-            We are still working on this component ;)
-          </v-card-text>
+          <PacketMap :packet="packet" />
         </v-card>
       </v-flex>
       
@@ -62,14 +58,17 @@ const axios = require("axios");
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 import StationRx from '../components/StationRx.vue'
 import HexView from '../components/HexView.vue'
+import PacketMap from '../components/PacketMap.vue'
 import moment from 'moment'
+import "leaflet/dist/leaflet.css"
 
 export default {
   name: "Packet",
   components: {
     NorbiTelemetry,
     StationRx,
-    HexView
+    HexView,
+    PacketMap
   },
   data() {
     return {
