@@ -46,7 +46,7 @@ export default {
       return moment(time).fromNow()
     },
     formatTime(time) {
-      return moment(time).format('HH:mm:ss.SSS');
+      return moment(time/1000).format('HH:mm:ss.SSS');
     }
   }
 }
