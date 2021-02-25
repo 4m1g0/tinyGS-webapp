@@ -45,6 +45,9 @@ export default {
     toHex(data){
       if (data.startsWith("VGlueUdTLXRlc3Q"))
         return "TinyGS Test Packet"
+      
+      if (data.startsWith("RXJyb3JfQ1JD"))
+        return "CRC ERROR"
 
       var decodedData = Buffer.from(data, 'base64')
       let packetData = "";

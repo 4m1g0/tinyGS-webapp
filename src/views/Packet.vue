@@ -19,7 +19,7 @@
               <i>{{packet.mode}}</i> {{packet.freq}} Mhz  SF: {{packet.sf}}  CR: {{packet.cr}}  BW: {{packet.bw}} kHz
             </div>
             <br>
-            <NorbiTelemetry :data="packet.parsed"/>
+            <NorbiTelemetry v-if="packet.parsed" :data="packet.parsed"/>
           </v-card-text>
         </v-card>
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
