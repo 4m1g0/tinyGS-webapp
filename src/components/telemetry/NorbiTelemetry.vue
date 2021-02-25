@@ -1,6 +1,6 @@
 <template>
-  <div v-if="'raw' in data">
-    {{data.payload.raw}}<br />
+  <div v-if="'raw' in data.payload">
+    No parser available for this type of packet
   </div>
   <div v-else>
     📻 {{data.payload.brk_transmitter_power_active}}W  🌡 {{data.payload.brk_temp_active}}ºC <br />
