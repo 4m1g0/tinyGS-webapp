@@ -13,9 +13,11 @@
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;">
           <h3>TLEs</h3>
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            {{satellite.tle[0]}}<br>
-            {{satellite.tle[1]}}<br>
-            {{satellite.tle[2]}}
+            <pre>
+{{satellite.tle[0]}}
+{{satellite.tle[1]}}
+{{satellite.tle[2]}}
+            </pre>
           </v-card-text>
         </v-card>
         <!-- Telemetry -->
