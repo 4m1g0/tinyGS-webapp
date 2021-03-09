@@ -10,7 +10,7 @@
         
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            <h1 class="ma-2 mb-5">{{packet.satDisplayName}}</h1>
+            <h1 class="ma-2 mb-5">{{packet.satDisplayName || packet.satellite}}</h1>
             <div>Received on: {{formatDate(packet.serverTime)}}</div>
             <div v-if="packet.mode == 'FSK'">
               <i>{{packet.mode}}</i> {{packet.freq}} Mhz  BR: {{packet.bitrate}}  FD: {{packet.freqDev}}  BW: {{packet.rxBw}} kHz
@@ -19,7 +19,7 @@
               <i>{{packet.mode}}</i> {{packet.freq}} Mhz  SF: {{packet.sf}}  CR: {{packet.cr}}  BW: {{packet.bw}} kHz
             </div>
             <br>
-            <NorbiTelemetry v-if="packet.parsed" :data="packet.parsed"/>
+            <component v-bind:is="getComponent(packet.satellite)" v-if="packet.parsed" :data="packet.parsed"></component>
           </v-card-text>
         </v-card>
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
@@ -56,6 +56,7 @@
 <script>
 const axios = require("axios");
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
+import VR3XTelemetry from '../components/telemetry/VR3XTelemetry.vue'
 import StationRx from '../components/StationRx.vue'
 import HexView from '../components/HexView.vue'
 import PacketMap from '../components/PacketMap.vue'
@@ -68,7 +69,8 @@ export default {
     NorbiTelemetry,
     StationRx,
     HexView,
-    PacketMap
+    PacketMap,
+    VR3XTelemetry
   },
   data() {
     return {
@@ -95,7 +97,16 @@ export default {
             bytes[i] = binary_string.charCodeAt(i);
         }
         return bytes.buffer;
-    }
+    },
+    getComponent(sat) {
+      sat = sat.replace("-A", "").replace("-B", "").replace("-C", "") // VR3X hack untill we impliment a way to handle constellations
+      if (["Norbi", "VR3X"].includes(`${sat}`)) {
+        return `${sat}Telemetry`
+      }
+      else {
+        return "NorbiTelemetry"
+      }
+    },
   }
 }
 </script>

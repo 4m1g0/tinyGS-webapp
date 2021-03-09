@@ -75,6 +75,7 @@ const axios = require("axios");
 import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
 import NorbiPacket from '../components/packets/NorbiPacket.vue'
 import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
+import VR3XPacket from '../components/packets/VR3XPacket.vue'
 import moment from 'moment'
 
 export default {
@@ -83,7 +84,8 @@ export default {
     //LineChart,
     NorbiTelemetry,
     NorbiPacket,
-    UndefinedPacket
+    UndefinedPacket,
+    VR3XPacket
   },
   data() {
     return {
@@ -134,7 +136,8 @@ export default {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5
     },
     getComponent(sat) {
-      if (["NorbiPacket"].includes(`${sat}Packet`)) {
+      sat = sat.replace("-A", "").replace("-B", "").replace("-C", "") // VR3X hack untill we impliment a way to handle constellations
+      if (["NorbiPacket", "VR3XPacket"].includes(`${sat}Packet`)) {
         return `${sat}Packet`
       }
       else {
