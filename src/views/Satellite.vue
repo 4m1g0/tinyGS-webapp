@@ -5,7 +5,7 @@
       <!-- description -->
       <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1"> 
         <h1 class="heading">{{ satellite.displayName }}</h1>
-        <p v-html="satellite.description"></p>
+        <p v-html="satellite.longDescription"></p>
         <ul>
           <li><strong>Status:</strong> {{satellite.status}}</li>
           <li><strong>Launch Date:</strong> {{formatLaunchDate(satellite.launchDate)}}</li>
