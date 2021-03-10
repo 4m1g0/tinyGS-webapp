@@ -47,10 +47,8 @@
         </v-card>
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
-        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
-          <v-card-text class="grey--text text--darken-3 mx-auto">
-            We are still working on this component ;)
-          </v-card-text>
+        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3" style="min-height:500px;">
+          <iframe id="satvis-frame" allowtransparency="true" :src="`https://static.tinygs.com/?elements=Point,Label,Orbit,Sensor%20cone&layers=OfflineHighres&gs=${station.location[0]},${station.location[1]}&tags=tinyGS`" style="display: block; width:100%;height:500px;"></iframe>
         </v-card>
       </v-flex>
       

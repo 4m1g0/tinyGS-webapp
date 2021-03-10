@@ -7,6 +7,7 @@ import Packet from '../views/Packet.vue'
 import Packets from '../views/Packets.vue'
 import Station from '../views/Station.vue'
 import User from '../views/User.vue'
+import DMap from '../views/DMap.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
     path: '/user/:id',
     name: 'User',
     component: User
+  },
+  {
+    path: '/3dmap',
+    name: '3dMap',
+    component: DMap
   }
 ]
 
