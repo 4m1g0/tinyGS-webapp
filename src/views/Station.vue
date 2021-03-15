@@ -4,7 +4,12 @@
     <v-layout row wrap v-if="station">
       <!-- description -->
       <v-flex mt-4 ml-4 xs12 class="grey--text text--darken-1"> 
-        <h1 class="heading">{{ station.name }}</h1>
+        <h1 class="heading">
+          <v-btn @click="$router.go(-1)" class="mr-2" depressed>
+            <v-icon  large>mdi-arrow-left</v-icon>
+            <span>Back</span>
+          </v-btn>
+          {{ station.name }} Console</h1>
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         
@@ -98,12 +103,14 @@ export default {
   beforeMount() {
     this.getStation()
     this.getPackets()
+    
   },
   methods: {
     async getStation() {
       const { data } = await axios.get(`https://api.tinygs.com/v1/station/${this.$route.params.id}`);
       console.log(data);
       this.station = data;
+      document.title = `${this.station.name} Console - TinyGS`
     },
     async getPackets() {
       const { data } = await axios.get(`https://api.tinygs.com/v1/packets?station=${this.$route.params.id}`);

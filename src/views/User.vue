@@ -4,7 +4,7 @@
     <v-layout row wrap v-if="user">
       <!-- description -->
       <v-flex mt-4 ml-4 xs12 class="grey--text text--darken-1"> 
-        <!--<h1 class="heading">{{ station.name }}</h1>-->
+        <h1 class="heading">User Console</h1>
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">

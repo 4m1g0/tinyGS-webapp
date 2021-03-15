@@ -112,6 +112,7 @@ export default {
       const { data } = await axios.get(`https://api.tinygs.com/v1/satellite/${this.$route.params.name}`);
       console.log(data);
       this.satellite = data;
+      document.title = `${this.satellite.displayName} satellite - TinyGS`
     },
     async getPackets() {
       const { data } = await axios.get(`https://api.tinygs.com/v1/packets?satellite=${this.$route.params.name}`);
