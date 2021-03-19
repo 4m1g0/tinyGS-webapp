@@ -38,7 +38,7 @@
       <!-- Packets -->
       <v-flex xs12 sm12 pa-4>
         <div v-for="station in packet.stations" :key="`${station.name}@${station.userId}`"> 
-          <StationRx :station="station"/>
+          <StationRx :station="station" :freq="packet.freq"/>
           <v-divider></v-divider>
         </div>
       </v-flex>
