@@ -52,10 +52,12 @@
         </v-card>
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
-        <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
-          <v-card-text class="grey--text text--darken-3 mx-auto">
-            We are still working on this component ;)
-          </v-card-text>
+        <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3" style="min-height:500px;">
+          <iframe id="satvis-frame" allowtransparency="true" :src="`http://viewer.tinygs.com/?elements=Point,Label,Orbit,Sensor-cone,Ground-station-link&layers=OfflineHighres&gs=${station.location[0]},${station.location[1]}&tags=TinyGS`" class="satvis" :class="{'satvis-fullScreen': satvisFullScreen, 'satvis-normal': !satvisFullScreen}"></iframe>
+          <div class="credits-satvis">Powered by <a href="https://github.com/Flowm/satvis">Satvis</a> (MIT)</div>
+          <v-btn @click="satvisFullScreen = !satvisFullScreen" class="mr-2" :class="{'fullScreen-btn-fullScreen': satvisFullScreen, 'fullScreen-btn-normal': !satvisFullScreen}" icon>
+            <v-img contain transition="fade-transition" max-height="60" src="../assets/fullScren-but.png" />
+          </v-btn>
         </v-card>
       </v-flex>
       
@@ -98,6 +100,7 @@ export default {
     return {
       station: null,
       packets: null,
+      satvisFullScreen: false
     }
   },
   beforeMount() {
@@ -140,5 +143,44 @@ export default {
 </script>
 
 <style>
+.credits-satvis {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 9px;
+  font-size: 0.7em;
+  border-radius: 0 !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px;
+}
+
+.satvis-fullScreen {
+  position: fixed;
+  top: 65px;
+  left:0;
+  padding-bottom: 65px;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.satvis-normal {
+  display: block;
+  width: 100%;
+  height: 500px;
+}
+
+.fullScreen-btn-normal {
+  position: absolute;
+  right: 4px;
+  bottom: 35px;
+}
+
+.fullScreen-btn-fullScreen {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 3;
+}
 
 </style>

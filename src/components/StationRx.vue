@@ -11,7 +11,7 @@
     </v-flex>
     <v-flex xs6 sm4 md2 lg1 xl1>
       <div class="caption grey--text text-center">📐 Elevation</div>
-      <div class="text-center">{{station.elevation.toFixed(2)}}º</div>
+      <div class="text-center">{{(station.elevation || 0).toFixed(2)}}º</div>
     </v-flex>
     <v-flex xs6 sm4 md4 lg2 xl2>
       <div class="caption grey--text text-center">🕒 Time</div>
@@ -27,7 +27,7 @@
     </v-flex>
     <v-flex xs6 sm4 md2 lg1 xl1>
       <div class="caption grey--text text-center">Predicted Doppler</div>
-      <div class="text-center">{{(station.doppler * freq * 1000000 - freq * 1000000).toFixed(2)}} Hz</div>
+      <div class="text-center">{{((station.doppler * freq * 1000000 - freq * 1000000) || 0).toFixed(2)  || ""}} Hz</div>
     </v-flex>
     <v-flex xs6 sm4 md4 lg2 xl2>
       <div class="caption grey--text text-center">Frequency Error</div>
