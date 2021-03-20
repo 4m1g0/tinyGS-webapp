@@ -46,7 +46,6 @@
       <p>This are the more important moments of the project:</p>
       <ul>
         <li>Nov 28, 2019 ESP32-OLED-Fossa-GroundStation project born.</li>
-        <li>Nov 28, 2019 ESP32-OLED-Fossa-GroundStation project born.</li>
         <li>Dec 6, 2019 FossaSAT-1 deployed with an Electron rocket by Rocket Lab.</li>
         <li>Dec 10,2019 YL3CT's GS receive the fist LoRa packet from FossaSAT-1</li>
         <li>Sep 28,2020 6U Norby LoRa satellite is deployed with a Soyuz-2-1b launcher</li>
@@ -54,6 +53,8 @@
         <li>Jan 24, 2021 3x V-R3x sat deployed with a Falcon-9</li>
         <li>Jan 25, 2021 KA9ETC'S GS receive the first LoRa packet from V-R3x</li>
         <li>Feb 14, 2021 New name and web tinyGS.com with a new Beta firmware.</li>
+        <li>Feb 28, 2021 First packet received from SD SAT by PA3ARK.</li>
+        <li>Mar 20, 2021 First LoRa relay message between two tinyGS stations from K4KDR to N6RFM using SD SAT.</li>
       </ul>
       <h3 class="py-3 pt-6 grey--text text--darken-3">Get Started</h3>
       <p>Join out <a href="https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q">Telegram Channel</a>, visit our <a href="https://github.com/G4lile0/tinyGS">GitHub Page</a> and build your station.</p>
