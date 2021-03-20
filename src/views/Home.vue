@@ -56,7 +56,7 @@
         <li>Feb 14, 2021 New name and web tinyGS.com with a new Beta firmware.</li>
       </ul>
       <h3 class="py-3 pt-6 grey--text text--darken-3">Get Started</h3>
-      <p>In order to get started, visit our <a href="https://github.com/G4lile0/tinyGS">GitHub Page</a> and build your station.</p>
+      <p>Join out <a href="https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q">Telegram Channel</a>, visit our <a href="https://github.com/G4lile0/tinyGS">GitHub Page</a> and build your station.</p>
 
     </v-container>
     <v-footer class="mt-6 pa-3"
