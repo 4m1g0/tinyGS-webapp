@@ -53,7 +53,7 @@
       </v-flex>
       <v-flex pa-4 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3" style="min-height:500px;">
-          <iframe id="satvis-frame" allowtransparency="true" :src="`http://viewer.tinygs.com/?elements=Point,Label,Orbit,Sensor-cone,Ground-station-link&layers=OfflineHighres&gs=${station.location[0]},${station.location[1]}&tags=TinyGS`" class="satvis" :class="{'satvis-fullScreen': satvisFullScreen, 'satvis-normal': !satvisFullScreen}"></iframe>
+          <iframe id="satvis-frame" allowtransparency="true" :src="`https://viewer.tinygs.com/?elements=Point,Label,Orbit,Sensor-cone,Ground-station-link&layers=OfflineHighres&gs=${station.location[0]},${station.location[1]}&tags=TinyGS`" class="satvis" :class="{'satvis-fullScreen': satvisFullScreen, 'satvis-normal': !satvisFullScreen}"></iframe>
           <div class="credits-satvis">Powered by <a href="https://github.com/Flowm/satvis">Satvis</a> (MIT)</div>
           <v-btn @click="satvisFullScreen = !satvisFullScreen" class="mr-2" :class="{'fullScreen-btn-fullScreen': satvisFullScreen, 'fullScreen-btn-normal': !satvisFullScreen}" icon>
             <v-img contain transition="fade-transition" max-height="60" src="../assets/fullScren-but.png" />
