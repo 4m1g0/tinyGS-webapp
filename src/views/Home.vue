@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-        <iframe src="https://api.tinygs.com/worldmap/" style="height:60vh;width:100%;" ></iframe>
+      <Worldmap style="height:60vh;width:100%;"/>
+      <!--<iframe src="https://api.tinygs.com/worldmap/" style="height:60vh;width:100%;" ></iframe>-->
     <v-container class="grey--text text--darken-3">
       <h2 class="grey--text text--darken-3 mb-4">Welcome to TinyGS, the Open Source Global Satellite Network</h2>
       <p>TinyGS is an open network of Ground Stations distributed around the world to receive and operate LoRa satellites, weather probes and other flying objects, using cheap and versatile modules.</p>
@@ -93,11 +94,13 @@
 </template>
 
 <script>
+import Worldmap from '../components/Worldmap.vue';
 const axios = require("axios");
 
 export default {
   name: 'Home',
   components: {
+    Worldmap
   
   },
   data() {

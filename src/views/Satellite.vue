@@ -10,6 +10,21 @@
           <li><strong>Status:</strong> {{satellite.status}}</li>
           <li><strong>Launch Date:</strong> {{formatLaunchDate(satellite.launchDate)}}</li>
         </ul>
+        
+      </v-flex>
+
+      <!-- satvis -->
+      <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1">
+        <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3" style="min-height:500px;">
+          <iframe id="satvis-frame" allowtransparency="true" :src="`https://viewer.tinygs.com/?elements=Point,Label,Orbit,Sensor-cone,Ground-station-link&layers=OfflineHighres&tags=TinyGS&sat=${satellite.displayName}`" class="satvis" :class="{'satvis-fullScreen': satvisFullScreen, 'satvis-normal': !satvisFullScreen}"></iframe>
+          <div class="credits-satvis">Powered by <a href="https://github.com/Flowm/satvis">Satvis</a> (MIT)</div>
+          <v-btn @click="satvisFullScreen = !satvisFullScreen" class="mr-2" :class="{'fullScreen-btn-fullScreen': satvisFullScreen, 'fullScreen-btn-normal': !satvisFullScreen}" icon>
+            <v-img contain transition="fade-transition" max-height="60" src="../assets/fullScren-but.png" />
+          </v-btn>
+        </v-card>
+      </v-flex>
+
+      <v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1"> 
         <v-card flat class="mr-5 my-3 pa-4 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;">
           <h3>TLEs</h3>
           <v-card-text class="grey--text text--darken-3 mx-auto">
@@ -38,6 +53,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
+      
       
       <!-- chart -->
       <!--<v-flex pa-4 mt-2 xs12 sm6 class="grey--text text--darken-1">
@@ -92,6 +108,7 @@ export default {
       satellite: null,
       packets: null,
       datacollection: null,
+      satvisFullScreen: false,
       options: {
         scales: {
             xAxes: [{
@@ -156,5 +173,45 @@ export default {
 
 .clickable:hover {
   right: -1px;
+}
+
+.credits-satvis {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 9px;
+  font-size: 0.7em;
+  border-radius: 0 !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px;
+}
+
+.satvis-fullScreen {
+  position: fixed;
+  top: 65px;
+  left:0;
+  padding-bottom: 65px;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.satvis-normal {
+  display: block;
+  width: 100%;
+  height: 500px;
+}
+
+.fullScreen-btn-normal {
+  position: absolute;
+  right: 4px;
+  bottom: 35px;
+}
+
+.fullScreen-btn-fullScreen {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 3;
 }
 </style>
