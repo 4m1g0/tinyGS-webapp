@@ -73,25 +73,35 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       stations: null,
-      satellites: null
+      satellites: null,
+      timer1: null,
+      timer2:null,
     };
   },
   beforeMount(){
     this.getSatellites()
     this.getStations()
-    setInterval(this.getSatellites, 10000);
-    setInterval(this.getStations, 10000);
+    this.timer1 = setInterval(this.getSatellites, 10000);
+    this.timer1 = setInterval(this.getStations, 10000);
   },
   methods:{
     async getStations() {
       const { data } = await axios.get("https://api.tinygs.com/v1/stations");
       //console.log(data);
-      this.stations = data;
+      if (!data.update){
+        clearInterval(this.timer1)
+        clearInterval(this.timer2)
+      }
+      this.stations = data.list;
     },
     async getSatellites() {
       const { data } = await axios.get("https://api.tinygs.com/v1/satellitesWorldmap");
       //console.log(data);
-      this.satellites = data;
+      if (!data.update){
+        clearInterval(this.timer1)
+        clearInterval(this.timer2)
+      }
+      this.satellites = data.list;
     }
   }
 };
