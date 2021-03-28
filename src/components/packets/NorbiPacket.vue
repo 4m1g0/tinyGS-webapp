@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
   <v-flex xs12 sm6 md6 lg3 xl2>
-  <h3><v-icon>$satelliteDark</v-icon> {{packet.satDisplayName}}</h3>
+  <h3><v-icon>$satelliteDark</v-icon> {{packet.parsed?packet.satDisplayName:"Unknown"}}</h3>
   <div>{{`${dateFormat(packet.serverTime)} (${dateSince(packet.serverTime)})`}}</div>
   </v-flex>
   <v-flex xs6 sm3 md3 lg2 xl1>
