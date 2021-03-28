@@ -69,6 +69,23 @@
           </v-btn>
         </v-card>
       </v-flex>
+      <v-snackbar
+        v-model="snackbar.show"
+        >
+          <b>{{ snackbar.title }}</b><br>
+          <i>{{ snackbar.description }}</i>
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="primary"
+              text
+              v-bind="attrs"
+              @click="snackbar.show = false"
+            >
+              Close
+            </v-btn>
+        </template>
+      </v-snackbar>
       
   
       <!-- Packets -->
@@ -111,7 +128,8 @@ export default {
       packets: null,
       satvisFullScreen: false,
       txStr: "",
-      txDisabled: false
+      txDisabled: false,
+      snackbar: {text:"", show:false}
     }
   },
   beforeMount() {
@@ -150,9 +168,16 @@ export default {
       }
     },
     async sendTx() {
-      if (!this.txStr)
+      if (!this.txStr) {
+        this.snackbar.title = "You cannot send an empty payload!"
+        this.snackbar.description = ""
+        this.snackbar.show = true;
         return;
-
+      }
+        
+      this.snackbar.title = "TX successful from your station!"
+      this.snackbar.description = "Please, be aware that nearby stations might also want to transmit. Do not flood."
+      this.snackbar.show = true;
       setTimeout(() => this.txDisabled = false , 1000);
       this.txDisabled = true;
       let params = {
@@ -172,6 +197,9 @@ export default {
       }
     },
     async sendTest() {
+      this.snackbar.title = "Test frame sent!"
+      this.snackbar.description = "Please, do not overuse this feature to keep the system available for real packets."
+      this.snackbar.show = true;
       setTimeout(() => this.txDisabled = false , 20000);
       this.txDisabled = true;
       let params = {
