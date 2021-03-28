@@ -41,7 +41,6 @@ export default {
   methods: {
     async getSatellites() {
       const { data } = await axios.get(`https://api.tinygs.com/v1/satellites/?status=Supported`);
-      console.log("test")
       console.log(data);
       
       this.satellites = data.map(x => x.name);
@@ -59,10 +58,9 @@ export default {
       }
       console.log(this.modemConf);
       try {
-        const { data } = await axios.post(`https://api.tinygs.com/v1/station/${this.station}`, params, config);
-        console.log(data);
+        await axios.post(`https://api.tinygs.com/v1/station/${this.station}`, params, config);
       } catch (err) {
-        //console.log(JSON.stringify(err))
+        console.log(JSON.stringify(err))
       }
       this.$emit("sent");
       this.modal = false

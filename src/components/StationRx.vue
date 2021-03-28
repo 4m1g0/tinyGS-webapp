@@ -7,7 +7,7 @@
     </v-flex>
     <v-flex xs6 sm4 md2 lg1 xl1>
       <div class="caption grey--text text-center">📏 Distance</div>
-      <div class="text-center">{{station.distance.toFixed(0)}} Km</div>
+      <div class="text-center">{{(station.distance || 0).toFixed(0)}} Km</div>
     </v-flex>
     <v-flex xs6 sm4 md2 lg1 xl1>
       <div class="caption grey--text text-center">📐 Elevation</div>

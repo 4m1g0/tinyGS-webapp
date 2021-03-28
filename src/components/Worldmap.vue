@@ -79,8 +79,8 @@ export default {
   beforeMount(){
     this.getSatellites()
     this.getStations()
-    setInterval(this.getSatellites, 10000);
-    setInterval(this.getStations, 10000);
+    //setInterval(this.getSatellites, 10000);
+    //setInterval(this.getStations, 10000);
   },
   methods:{
     async getStations() {

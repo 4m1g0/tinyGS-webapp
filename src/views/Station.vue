@@ -44,8 +44,17 @@
                 <div class="caption grey--text">Status</div>
                 <strong v-html="(station.status==1) ? '<span class=\'green--text\'>Online</span>' : '<span class=\'red--text\'>Offline</span>'"></strong>
               </v-flex>
-              <v-flex pa-2 xs6 sm6 md6 lg3 xl3 v-if="isCurrentUser(station.userId)">
-                <EditStation v-on:sent="configSent()" :station="$route.params.id" :config="station.modem_conf" />
+              <v-flex pa-2 xs6 sm6 md6 lg3 xl3>
+                <EditStation v-on:sent="configSent()" :station="$route.params.id" :config="station.modem_conf" v-if="isCurrentUser(station.userId)"/>
+              </v-flex>
+              <v-flex pa-2 xs8 sm8 md8 lg4 xl4 v-if="isCurrentUser(station.userId) ">
+                <v-text-field v-model="txStr" maxlength="25" persistent-hint hint="Make sure you are allowed to transmit by local regulations!" label="Message to transmit" style="display:inline"></v-text-field>
+              </v-flex>
+              <v-flex pa-2 xs4 sm4 md4 lg3 xl3 v-if="isCurrentUser(station.userId) ">
+                <v-btn :disabled="txDisabled||!station.tx" @click="sendTx()" color="primary">{{buttonText}}</v-btn>
+              </v-flex>
+              <v-flex pa-2 xs4 sm4 md4 lg3 xl3 v-if="isCurrentUser(station.userId)">
+                <v-btn :disabled="txDisabled||!station.tx" @click="sendTest()" color="primary">Transmit test frame</v-btn>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -100,7 +109,9 @@ export default {
     return {
       station: null,
       packets: null,
-      satvisFullScreen: false
+      satvisFullScreen: false,
+      txStr: "",
+      txDisabled: false
     }
   },
   beforeMount() {
@@ -137,6 +148,54 @@ export default {
       else {
         return "UndefinedPacket"
       }
+    },
+    async sendTx() {
+      if (!this.txStr)
+        return;
+
+      setTimeout(() => this.txDisabled = false , 1000);
+      this.txDisabled = true;
+      let params = {
+        tx: this.txStr
+      }
+      let config = {
+        headers: {
+          sessionToken: localStorage.sessionToken,
+          userId: localStorage.userId
+        }
+      }
+      //console.log(this.modemConf);
+      try {
+        await axios.post(`https://api.tinygs.com/v1/station/${this.$route.params.id}/tx`, params, config);
+      } catch (err) {
+        console.log(JSON.stringify(err))
+      }
+    },
+    async sendTest() {
+      setTimeout(() => this.txDisabled = false , 20000);
+      this.txDisabled = true;
+      let params = {
+      }
+      let config = {
+        headers: {
+          sessionToken: localStorage.sessionToken,
+          userId: localStorage.userId
+        }
+      }
+      //console.log(this.modemConf);
+      try {
+        await axios.post(`https://api.tinygs.com/v1/station/${this.$route.params.id}/test`, params, config);
+      } catch (err) {
+        console.log(JSON.stringify(err))
+      }
+    }
+  },
+  computed: {
+    buttonText() {
+      if (!this.station.tx)
+        return "TX Disabled"
+      
+      return this.txDisabled?"Tx sent":"Send TX!"
     }
   }
 }

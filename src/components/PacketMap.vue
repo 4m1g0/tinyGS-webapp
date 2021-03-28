@@ -10,14 +10,14 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-circle
+      <l-circle v-if="packet.satPos"
         :lat-lng="circle.center"
         :radius="circle.radius"
       >
         
       </l-circle>
 
-      <l-marker :lat-lng="[packet.satPos.lat, packet.satPos.lng]" :icon="satelliteIcon"> 
+      <l-marker v-if="packet.satPos" :lat-lng="[packet.satPos.lat, packet.satPos.lng]" :icon="satelliteIcon"> 
 
         <l-popup :content="`<h3>${packet.satDisplayName}</h3>`" />
       </l-marker>
@@ -25,7 +25,7 @@
       <l-marker v-for="station in packet.stations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.crc_error)?stationErrorIcon:stationActiveIcon">
 
         <l-popup :content="`<h3>${station.name}</h2><br>
-                            <strong>Distance:</strong> ${station.distance.toFixed(2)} Km<br>
+                            <strong>Distance:</strong> ${station.distance?station.distance.toFixed(2):0} Km<br>
                             <strong>RSSI:</strong> ${station.receptionParams.rssi} dBm<br>
                             <strong>SNR:</strong> ${station.receptionParams.snr} Db<br>
                             <strong>Freq error:</strong> ${station.receptionParams.frequency_error} Hz<br>`" />
@@ -76,9 +76,9 @@ export default {
                         iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
                     }),
       zoom: 4,
-      center: [this.packet.satPos.lat, this.packet.satPos.lng],
+      center: [this.packet.satPos?this.packet.satPos.lat:this.packet.stations[0].location[0], this.packet.satPos?this.packet.satPos.lng:this.packet.stations[0].location[1]],
       circle: {
-        center: latLng(this.packet.satPos.lat, this.packet.satPos.lng),
+        center: this.packet.satPos? latLng(this.packet.satPos.lat, this.packet.satPos.lng):[0,0],
         radius: 2500000
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
