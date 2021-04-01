@@ -7,6 +7,7 @@ import Packet from '../views/Packet.vue'
 import Packets from '../views/Packets.vue'
 import Station from '../views/Station.vue'
 import User from '../views/User.vue'
+import AprilFools from '../views/AprilFools.vue'
 
 Vue.use(VueRouter)
 
@@ -76,6 +77,14 @@ const routes = [
     component: User,
     meta: {
       title: 'User Console - TinyGS'
+    }
+  },
+  {
+    path: '/april/:id',
+    name: 'AprilFools',
+    component: AprilFools,
+    meta: {
+      title: 'April Fools - TinyGS'
     }
   }
 ]

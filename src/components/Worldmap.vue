@@ -19,7 +19,7 @@
       <l-marker v-for="station in stations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon">
 
         <l-popup :content="`<h3>${station.name}</h2><br>
-                            <strong>Last seen:</strong> ${station.lastSeen} <br>
+                            <strong>Last seen:</strong> ${ formatDate(station.lastSeen) } <br>
                             <strong>Version:</strong> ${station.version} <br>
                             <strong>Status:</strong> ${(station.status==0)?'Offline':'Online'} <br>
                             <strong>Listening:</strong> ${station.satellite} <br>`" />
@@ -38,6 +38,7 @@ import {
 } from "vue2-leaflet";
 import { icon } from "leaflet";
 const axios = require("axios");
+import moment from 'moment'
   
 
 export default {
@@ -92,7 +93,10 @@ export default {
       const { data } = await axios.get("https://api.tinygs.com/v1/satellitesWorldmap");
       //console.log(data);
       this.satellites = data;
-    }
+    },
+    formatDate(time) {
+      return moment(time).fromNow()
+    },
   }
 };
 </script>
