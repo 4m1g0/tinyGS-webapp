@@ -18,11 +18,12 @@
 
       <l-marker v-for="station in focusStations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon" :class="(station.status == 0)?'inactive':'active'" >
 
-        <l-popup :content="`<h3>${station.name}</h2><br>
-                            <strong>Last seen:</strong> ${ formatDate(station.lastSeen) } <br>
-                            <strong>Version:</strong> ${station.version} <br>
+        <l-popup :content="`<h3><a href='/station/${station.name}@${station.userId}'>${station.name}</a></h3><br>
+                            <strong>${(station.status==0)?'Last seen':'Last packet'}:</strong> ${(station.status==0)?formatDate(station.lastSeen):formatDate(station.lastPacketTime)} <br>
+                            <strong >Version:</strong> ${station.version} <br>
                             <strong>Status:</strong> ${(station.status==0)?'Offline':'Online'} <br>
                             <strong>Listening:</strong> ${station.satellite} <br>`" />
+      
       </l-marker>
 
     </l-map>
@@ -96,6 +97,7 @@ export default {
       this.satellites = data;
     },
     formatDate(time) {
+      if (!time) { return "Never"}
       return moment(time).fromNow()
     },
   },
@@ -112,6 +114,10 @@ export default {
 </script>
 
 <style >
+  .leaflet-marker-icon[src*="satellite_blue.png"] {
+    z-index: 300 !important;
+  }
+
   .leaflet-marker-icon[src*="station_icon_green.png"] {
     z-index: 200 !important;
   }
