@@ -75,11 +75,11 @@ export default {
                         iconSize:     [32, 32], // size of the icon
                         iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
                     }),
-      zoom: 4,
+      zoom: 3,
       center: [this.packet.satPos?this.packet.satPos.lat:this.packet.stations[0].location[0], this.packet.satPos?this.packet.satPos.lng:this.packet.stations[0].location[1]],
       circle: {
         center: this.packet.satPos? latLng(this.packet.satPos.lat, this.packet.satPos.lng):[0,0],
-        radius: 2500000
+        radius: (this.packet.footPrint*500)
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:

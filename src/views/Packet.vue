@@ -18,10 +18,16 @@
             <div v-else>
               <i>{{packet.mode}}</i> {{packet.freq}} Mhz  SF: {{packet.sf}}  CR: {{packet.cr}}  BW: {{packet.bw}} kHz
             </div>
+            <div v-if="packet.sunLit">Sat on Sun ☀️ Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º
+              </div>
+            <div v-else>Sat on Umbra 🌌  Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º 
+              </div>              
+            <div>Theoretical coverage {{(packet.footPrint).toFixed(0)}} km </div>
             <br>
             <component v-bind:is="getComponent(packet.satellite)" v-if="packet.parsed" :data="packet.parsed"></component>
           </v-card-text>
         </v-card>
+       
         <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
             <h2 class="ma-2 mb-5">Hexadecimal view</h2>

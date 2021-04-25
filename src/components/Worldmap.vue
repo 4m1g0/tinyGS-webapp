@@ -2,6 +2,7 @@
 
   <div>
     <l-map
+      @click="focusSatellite=null"
       :zoom="zoom"
       :center="center"
       style="height: 100%; width: 100%; z-index:0;"
@@ -11,12 +12,11 @@
         :attribution="attribution"
       />
 
-      <l-marker v-for="satellite in satellites" :key="satellite.name" :lat-lng="[satellite.lat, satellite.lng]" :icon="satelliteIcon"> 
-
-        <l-popup :content="`<h3>${satellite.displayName}</h3>`" />
+      <l-marker v-for="satellite in satellites" :key="satellite.name" :lat-lng="[satellite.lat, satellite.lng]" :icon="satelliteIcon" @click="focusSatellite=satellite.name"> 
+        <l-popup :content="`<h3>${satellite.displayName}</h3>`" @click="focusSatellite=null" />
       </l-marker>
 
-      <l-marker v-for="station in stations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon">
+      <l-marker v-for="station in focusStations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon" :class="(station.status == 0)?'inactive':'active'" >
 
         <l-popup :content="`<h3>${station.name}</h2><br>
                             <strong>Last seen:</strong> ${ formatDate(station.lastSeen) } <br>
@@ -74,7 +74,8 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       stations: null,
-      satellites: null
+      satellites: null,
+      focusSatellite: null
     };
   },
   beforeMount(){
@@ -97,6 +98,25 @@ export default {
     formatDate(time) {
       return moment(time).fromNow()
     },
+  },
+  computed:{ 
+    focusStations: function (){
+      if (!this.focusSatellite) return this.stations
+      let root=this 
+      return this.stations.filter((x)=>x.satellite==root.focusSatellite)
+    }
+
   }
+
 };
 </script>
+
+<style >
+  .leaflet-marker-icon[src*="station_icon_green.png"] {
+    z-index: 200 !important;
+  }
+
+  .leaflet-marker-icon[src*="station_icon_red.png"] {
+    z-index: 199 !important;
+  }
+</style>
