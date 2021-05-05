@@ -12,18 +12,7 @@
   <div class="caption grey--text">Received by</div>
   <div>{{`${packet.stationNumber} stations`}}</div>
   </v-flex>
-  <v-flex xs12 sm12 md12 lg6 xl4 v-if="packet.parsed && !packet.parsed.payload.raw">
-    <div>📻 {{packet.parsed.payload.brkTransmitterPowerActive}}W  🌡 {{packet.parsed.payload.brkTempActive}}ºC ☀️ {{packet.parsed.payload.sesTotalGeneratedPower}}mW  🔋️ {{packet.parsed.payload.sesChargeLevelMAh}}mAh  ⛽️ {{packet.parsed.payload.sesTotalChargingPower}}mW</div>
-    <div>🛰 {{packet.parsed.payload.sesVoltage}}mV  🔌 {{packet.parsed.payload.sesTotalPowerLoad}}mW 🌡 Board PMM: {{packet.parsed.payload.sesMedianPmmTemp}}ºC   PAM: {{packet.parsed.payload.sesMedianPamTemp}}ºC </div>
-  </v-flex>
-  <v-flex class="d-none d-xl-inline-block xl4" v-if="packet.parsed && !packet.parsed.payload.raw">
-    <div>🌡 Solar Array X-: {{packet.parsed.payload.sesMedianPanelXTempNegative}}ºC  Solar Array X+: {{packet.parsed.payload.sesMedianPanelXTempPositive}}ºC</div>
-    <div>BRK Reset: {{packet.parsed.payload.brkRestartsCountActive}}   Frame: {{packet.parsed.payload.frameNumber}}</div>
-  </v-flex>
-  <v-flex class="d-none d-xl-inline-block xl8" v-else>
-    <div class="caption grey--text">Data</div>
-    <div>{{toHex(packet.raw)}}</div>
-  </v-flex>
+  
   </v-layout>
 </template>
 
@@ -33,8 +22,17 @@ import moment from 'moment'
 export default {
   name: "NorbiPacket",
   props: [
-    "packet"
+    "packet",
+    "customTemplate"
   ],
+  data() {
+    return {
+        parsedContent: null
+    }
+  },
+  mounted(){
+    this.parsedContent = Vue.compile(this.customTemplate).render;
+  },
   methods: {
     dateFormat(time){
       return moment(time).format("lll")
