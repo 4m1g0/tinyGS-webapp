@@ -91,10 +91,7 @@
       <!-- Packets -->
       <v-flex xs12 sm12 pa-4>
         <div v-for="packet in packets" :key="packet.id"> 
-          <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
-            <!--<NorbiPacket :packet="packet"/>-->
-            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
-          </v-card>
+          <PacketRow :packet="packet" :customTemplate="customTemplates[packet.satellite]" />
           <v-divider></v-divider>
         </div>
       </v-flex>
@@ -111,16 +108,15 @@
 
 <script>
 const axios = require("axios");
-import NorbiPacket from '../components/packets/NorbiPacket.vue'
-import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
+import PacketRow from '../components/PacketRow.vue'
 import EditStation from '../components/EditStation.vue'
 import moment from 'moment'
 
+
 export default {
   components: {
-    NorbiPacket,
-    UndefinedPacket,
-    EditStation
+    EditStation,
+    PacketRow
   },
   data() {
     return {
@@ -129,13 +125,13 @@ export default {
       satvisFullScreen: false,
       txStr: "",
       txDisabled: false,
-      snackbar: {text:"", show:false}
+      snackbar: {text:"", show:false},
+      customTemplates: null,   
     }
   },
   beforeMount() {
     this.getStation()
     this.getPackets()
-    
   },
   methods: {
     async getStation() {
@@ -145,9 +141,10 @@ export default {
       document.title = `${this.station.name} Console - TinyGS`
     },
     async getPackets() {
-      const { data } = await axios.get(`https://api.tinygs.com/v1/packets?station=${this.$route.params.id}`);
+      const { data } = await axios.get(`https://api.tinygs.com/v2/packets?station=${this.$route.params.id}`);
       console.log(data);
-      this.packets = data;
+      this.packets = data.packets;
+      this.customTemplates = data.templates;
     },
     dateSince(time) {
       console.log(time)
@@ -158,14 +155,6 @@ export default {
     },
     configSent(){
       this.getStation()
-    },
-    getComponent(sat) {
-      if (["NorbiPacket"].includes(`${sat}Packet`)) {
-        return `${sat}Packet`
-      }
-      else {
-        return "UndefinedPacket"
-      }
     },
     async sendTx() {
       if (!this.txStr) {

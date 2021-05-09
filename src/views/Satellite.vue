@@ -39,7 +39,7 @@
         <v-card v-if="Object.keys(satellite.lastTelemetry).length !== 0" flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
           <h2>Last telemetry</h2>
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            <NorbiTelemetry :data="satellite.lastTelemetry"/>
+            <!--<NorbiTelemetry :data="satellite.lastTelemetry"/>-->
           </v-card-text>
         </v-card>
       </v-flex>
@@ -63,10 +63,7 @@
       <!-- Packets -->
       <v-flex xs12 sm12 pa-4 v-if="packets && packets.length > 0">
         <div  v-for="packet in packets" :key="packet.id"> 
-          <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
-            <!--<NorbiPacket :packet="packet"/>-->
-            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
-          </v-card>
+          <PacketRow :packet="packet" :customTemplate="customTemplates[packet.satellite]" />
           <v-divider></v-divider>
         </div>
       </v-flex>
@@ -88,25 +85,20 @@
 <script>
 const axios = require("axios");
 //import LineChart from '../charts/LineChart.js'
-import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
-import NorbiPacket from '../components/packets/NorbiPacket.vue'
-import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
-import VR3XPacket from '../components/packets/VR3XPacket.vue'
+import PacketRow from '../components/PacketRow.vue'
 import moment from 'moment'
 
 export default {
   name: "Satellite",
   components: {
     //LineChart,
-    NorbiTelemetry,
-    NorbiPacket,
-    UndefinedPacket,
-    VR3XPacket
+    PacketRow
   },
   data() {
     return {
       satellite: null,
       packets: null,
+      customTemplates: null,
       datacollection: null,
       satvisFullScreen: false,
       options: {
@@ -132,9 +124,10 @@ export default {
       document.title = `${this.satellite.displayName} satellite - TinyGS`
     },
     async getPackets() {
-      const { data } = await axios.get(`https://api.tinygs.com/v1/packets?satellite=${this.$route.params.name}`);
+      const { data } = await axios.get(`https://api.tinygs.com/v2/packets?satellite=${this.$route.params.name}`);
       console.log(data);
-      this.packets = data;
+      this.packets = data.packets;
+      this.customTemplates = data.templates;
     },
     fillData () {
       this.datacollection = {
@@ -152,15 +145,6 @@ export default {
     },
     getRandomInt () {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-    },
-    getComponent(sat) {
-      sat = sat.replace("-A", "").replace("-B", "").replace("-C", "") // VR3X hack untill we impliment a way to handle constellations
-      if (["NorbiPacket", "VR3XPacket"].includes(`${sat}Packet`)) {
-        return `${sat}Packet`
-      }
-      else {
-        return "UndefinedPacket"
-      }
     },
     formatLaunchDate(date){
       return moment(date).format('lll');

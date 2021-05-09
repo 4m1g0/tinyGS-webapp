@@ -5,9 +5,7 @@
     <v-layout row wrap v-if="packets">
       <v-flex xs12 sm12 pa-4>
         <div v-for="packet in packets" :key="packet.id"> 
-          <v-card flat class="pa-7 clickable" :to="`/packet/${packet.id}`">
-            <component v-bind:is="getComponent(packet.satellite)" :packet="packet"></component>
-          </v-card>
+          <PacketRow :packet="packet" :customTemplate="customTemplates[packet.satellite]" />
           <v-divider></v-divider>
         </div>
       </v-flex>
@@ -21,18 +19,17 @@
 
 <script>
 const axios = require("axios");
-import NorbiPacket from '../components/packets/NorbiPacket.vue'
-import UndefinedPacket from '../components/packets/UndefinedPacket.vue'
+import PacketRow from '../components/PacketRow.vue'
 
 export default {
   name:"Packets",
   components: {
-    NorbiPacket,
-    UndefinedPacket
+    PacketRow
   },
   data() {
     return {
-      packets: null
+      packets: null,
+      customTemplates: null
     }
   },
   beforeMount(){
@@ -40,20 +37,12 @@ export default {
   },
   methods:{
     async getPackets() {
-      const { data } = await axios.get("https://api.tinygs.com/v1/packets");
+      const { data } = await axios.get("https://api.tinygs.com/v2/packets");
       console.log(data);
-      this.packets = data;
+      this.packets = data.packets;
+      this.customTemplates = data.templates;
     },
-    getComponent(sat) {
-      if (["NorbiPacket"].includes(`${sat}Packet`)) {
-        return `${sat}Packet`
-      }
-      else {
-        return "UndefinedPacket"
-      }
-    }
-  },
-  
+  }
 }
 </script>
 

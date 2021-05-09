@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
+    "v-runtime-template": "^1.10.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^3.2.0",
