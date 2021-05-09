@@ -36,10 +36,10 @@
           </v-card-text>
         </v-card>
         <!-- Telemetry -->
-        <v-card v-if="Object.keys(satellite.lastTelemetry).length !== 0" flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
+        <v-card v-if="satellite.lastTelemetry && satellite.webTemplate" flat class="mr-5 my-3 pa-4 grey--text text--darken-3">
           <h2>Last telemetry</h2>
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            <!--<NorbiTelemetry :data="satellite.lastTelemetry"/>-->
+            <DynamicTemplate :packet="lastTelemetry" :customTemplate="satellite.webTemplate" />
           </v-card-text>
         </v-card>
       </v-flex>
@@ -87,12 +87,14 @@ const axios = require("axios");
 //import LineChart from '../charts/LineChart.js'
 import PacketRow from '../components/PacketRow.vue'
 import moment from 'moment'
+import DynamicTemplate from '../components/DynamicTemplate.vue'
 
 export default {
   name: "Satellite",
   components: {
     //LineChart,
-    PacketRow
+    PacketRow,
+    DynamicTemplate
   },
   data() {
     return {
@@ -114,7 +116,7 @@ export default {
   beforeMount() {
     this.getSatellite()
     this.getPackets()
-    this.fillData()
+    //this.fillData()
   },
   methods: {
     async getSatellite() {
@@ -126,8 +128,9 @@ export default {
     async getPackets() {
       const { data } = await axios.get(`https://api.tinygs.com/v2/packets?satellite=${this.$route.params.name}`);
       console.log(data);
-      this.packets = data.packets;
       this.customTemplates = data.templates;
+      this.packets = data.packets;
+
     },
     fillData () {
       this.datacollection = {
@@ -148,6 +151,13 @@ export default {
     },
     formatLaunchDate(date){
       return moment(date).format('lll');
+    }
+  },
+  computed: {
+    lastTelemetry(){ // adaptor to use last telemetry as if it were a full packet
+      if (this.satellite && this.satellite.lastTelemetry)
+        return {parsed:this.satellite.lastTelemetry};
+      return null;
     }
   }
 }

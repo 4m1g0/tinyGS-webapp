@@ -28,6 +28,22 @@ export default {
       if (x)
         return x.toFixed(3);
       return null;
+    },
+    toHex(data){
+      if (data.startsWith("VGlueUdTLXRlc3Q"))
+        return "TinyGS Test Packet"
+      
+      if (data.startsWith("RXJyb3JfQ1JD"))
+        return "CRC ERROR"
+
+      var decodedData = Buffer.from(data, 'base64')
+      let packetData = "";
+      for (var i = 0; i < decodedData.length; i++) {
+          if (decodedData[i] <= 0xF) { packetData += "0"; }
+          else { packetData += ""; }
+          packetData += decodedData[i].toString(16) + "";
+      }
+      return packetData;
     }
   },
   computed: {

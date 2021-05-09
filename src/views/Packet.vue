@@ -24,7 +24,12 @@
               </div>              
             <div>Theoretical coverage {{(packet.footPrint).toFixed(0)}} km </div>
             <br>
-            <component v-bind:is="getComponent(packet.satellite)" v-if="packet.parsed" :data="packet.parsed"></component>
+            <div v-if="packet.parsed && packet.template">
+              <DynamicTemplate :packet="packet" :customTemplate="packet.template" />
+            </div>
+            <div v-else>
+              <strong>Unrecognized packet.</strong> This packet does not match the known structure of this satellite. It might be an unknown packet or just terrestrial noise.
+            </div>
           </v-card-text>
         </v-card>
        
@@ -61,8 +66,7 @@
 
 <script>
 const axios = require("axios");
-import NorbiTelemetry from '../components/telemetry/NorbiTelemetry.vue'
-import VR3XTelemetry from '../components/telemetry/VR3XTelemetry.vue'
+import DynamicTemplate from '../components/DynamicTemplate.vue'
 import StationRx from '../components/StationRx.vue'
 import HexView from '../components/HexView.vue'
 import PacketMap from '../components/PacketMap.vue'
@@ -72,11 +76,10 @@ import "leaflet/dist/leaflet.css"
 export default {
   name: "Packet",
   components: {
-    NorbiTelemetry,
+    DynamicTemplate,
     StationRx,
     HexView,
     PacketMap,
-    VR3XTelemetry
   },
   data() {
     return {
@@ -103,15 +106,6 @@ export default {
             bytes[i] = binary_string.charCodeAt(i);
         }
         return bytes.buffer;
-    },
-    getComponent(sat) {
-      sat = sat.replace("-A", "").replace("-B", "").replace("-C", "") // VR3X hack untill we impliment a way to handle constellations
-      if (["Norbi", "VR3X"].includes(`${sat}`)) {
-        return `${sat}Telemetry`
-      }
-      else {
-        return "NorbiTelemetry"
-      }
     },
   }
 }
