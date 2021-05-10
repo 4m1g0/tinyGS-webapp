@@ -16,6 +16,7 @@
     "v-runtime-template": "^1.10.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
+    "vue-json-viewer": "^2.2.18",
     "vue-router": "^3.2.0",
     "vue2-leaflet": "^2.6.0",
     "vuetify": "^2.4.0",

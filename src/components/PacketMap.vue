@@ -79,7 +79,7 @@ export default {
       center: [this.packet.satPos?this.packet.satPos.lat:this.packet.stations[0].location[0], this.packet.satPos?this.packet.satPos.lng:this.packet.stations[0].location[1]],
       circle: {
         center: this.packet.satPos? latLng(this.packet.satPos.lat, this.packet.satPos.lng):[0,0],
-        radius: (this.packet.footPrint*500)
+        radius: (this.packet.footPrint?this.packet.footPrint*500:3000)
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:

@@ -18,14 +18,14 @@
             <div v-else>
               <i>{{packet.mode}}</i> {{packet.freq}} Mhz  SF: {{packet.sf}}  CR: {{packet.cr}}  BW: {{packet.bw}} kHz
             </div>
-            <div v-if="packet.sunLit">Sat on Sun ☀️ Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º
-              </div>
-            <div v-else>Sat on Umbra 🌌  Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º 
-              </div>              
-            <div>Theoretical coverage {{(packet.footPrint).toFixed(0)}} km </div>
-            <br>
             <div v-if="packet.parsed && packet.template">
+              <div v-if="packet.eclipseDepth">
+                <div v-if="packet.sunLit">Sat on Sun ☀️ Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º</div>
+                <div v-else>Sat on Umbra 🌌  Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º </div>              
+                <div>Theoretical coverage {{(packet.footPrint).toFixed(0)}} km </div>
+              </div><br>
               <DynamicTemplate :packet="packet" :customTemplate="packet.template" />
+              
             </div>
             <div v-else>
               <strong>Unrecognized packet.</strong> This packet does not match the known structure of this satellite. It might be an unknown packet or just terrestrial noise.
@@ -33,10 +33,16 @@
           </v-card-text>
         </v-card>
        
-        <v-card flat class="mr-5 my-3 pa-2 grey--text text--darken-3">
+        <v-card flat class="mr-5 my-3 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
-            <h2 class="ma-2 mb-5">Hexadecimal view</h2>
+            <h2 class="ma-2">Hexadecimal view</h2>
             <HexView :raw="base64ToArrayBuffer(packet.raw)"/>
+          </v-card-text>
+        </v-card>
+        <v-card v-if="packet.parsed" flat class="mr-5 my-3 pa-2 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;max-height:600px;">
+          <v-card-text class="grey--text text--darken-3 mx-auto">
+            <h2 class="ma-2 mb-5">Raw parsed view</h2>
+            <json-viewer :expand-depth=0 boxed  :value="packet.parsed"></json-viewer>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -66,6 +72,7 @@
 
 <script>
 const axios = require("axios");
+import JsonViewer from 'vue-json-viewer'
 import DynamicTemplate from '../components/DynamicTemplate.vue'
 import StationRx from '../components/StationRx.vue'
 import HexView from '../components/HexView.vue'
@@ -80,6 +87,7 @@ export default {
     StationRx,
     HexView,
     PacketMap,
+    JsonViewer
   },
   data() {
     return {
@@ -112,5 +120,7 @@ export default {
 </script>
 
 <style>
-
+.jv-container .jv-code {
+  padding: 4px 10px;
+}
 </style>
