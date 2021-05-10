@@ -2,7 +2,7 @@
 
   <div>
     <l-map
-      @click="focusSatellite=null"
+      @popupclose="focusSatellite=null"
       :zoom="zoom"
       :center="center"
       style="height: 100%; width: 100%; z-index:0;"
@@ -13,19 +13,18 @@
       />
 
       <l-marker v-for="satellite in satellites" :key="satellite.name" :lat-lng="[satellite.lat, satellite.lng]" :icon="satelliteIcon" @click="focusSatellite=satellite.name"> 
-        <l-popup :content="`<h3>${satellite.displayName}</h3>`" @click="focusSatellite=null" />
+        <l-popup><h3><router-link :to='`/satellite/${satellite.name}`'>{{satellite.displayName}}</router-link></h3>Showing stations currently<br>listening to this satellite.</l-popup>
       </l-marker>
 
-      <l-marker v-for="station in focusStations" :key="`${station.name}@${station.userId}`" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon" :class="(station.status == 0)?'inactive':'active'" >
+      <l-marker v-for="station in stations" :key="`${station.name}@${station.userId}`" :visible="!focusSatellite || focusSatellite == station.satellite" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon" :class="(station.status == 0)?'inactive':'active'" >
 
-        <l-popup :content="`<h3><a href='/station/${station.name}@${station.userId}'>${station.name}</a></h3><br>
-                            <strong>${(station.status==0)?'Last seen':'Last packet'}:</strong> ${(station.status==0)?formatDate(station.lastSeen):formatDate(station.lastPacketTime)} <br>
-                            <strong >Version:</strong> ${station.version} <br>
-                            <strong>Status:</strong> ${(station.status==0)?'Offline':'Online'} <br>
-                            <strong>Listening:</strong> ${station.satellite} <br>`" />
+        <l-popup><h3><router-link :to='`/station/${station.name}@${station.userId}`'>{{station.name}}</router-link></h3><br>
+                            <strong>{{(station.status==0)?'Last seen':'Last packet'}}:</strong> {{(station.status==0)?formatDate(station.lastSeen):formatDate(station.lastPacketTime)}} <br>
+                            <strong>Version:</strong> {{station.version}} <br>
+                            <strong>Status:</strong> {{(station.status==0)?'Offline':'Online'}} <br>
+                            <strong>Listening:</strong> {{station.satellite}} <br> </l-popup>
       
       </l-marker>
-
     </l-map>
   </div>
 </template>
