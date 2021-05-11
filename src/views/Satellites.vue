@@ -3,21 +3,37 @@
     <!--<h1 class="subheading grey--text">Satellites</h1>-->
     <v-container class="my-5">
       <v-layout row class="mx-3">
-        <v-btn small text color="grey" class="LoRa mx-1 text--darken-4" @click="filter(null)">
-          <v-icon left small>mdi-radio</v-icon>
+        <v-btn small text color="grey" class="Supported mx-1 text--darken-4" @click="filter(null)">
+          <v-icon left small>mdi-filter-remove</v-icon>
           <span class="caption">All</span>
         </v-btn>
-        <v-btn small text color="grey" class="LoRa mx-1 text--darken-4" @click="filter('LoRa')">
+        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(400,550)">
           <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">LoRa</span>
+          <span class="caption">433</span>
         </v-btn>
-        <v-btn small text color="grey" class="FSK mx-1 text--darken-4" @click="filter('FSK')">
+        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(800,950)">
           <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">FSK</span>
+          <span class="caption">868-915</span>
         </v-btn>
-        <v-btn small text color="grey" class="GFSK9k6 mx-1 text--darken-4" @click="filter('GFSK9k6')">
+        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(2100,2500)">
           <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">GFSK9k6</span>
+          <span class="caption">2400</span>
+        </v-btn>
+        <v-btn small text color="grey" class="Supported mx-1 text--darken-4" @click="filter2('Supported')">
+          <v-icon left small>mdi-satellite-variant</v-icon>
+          <span class="caption">Supported</span>
+        </v-btn>
+        <v-btn small text color="grey" class="Future mx-1 text--darken-4" @click="filter2('Future')">
+          <v-icon left small>mdi-satellite-variant</v-icon>
+          <span class="caption">Future</span>
+        </v-btn>
+        <v-btn small text color="grey" class="Experimental mx-1 text--darken-4" @click="filter2('Experimental')">
+          <v-icon left small>mdi-satellite-variant</v-icon>
+          <span class="caption">Experimental</span>
+        </v-btn>
+        <v-btn small text color="grey" class="Inactive mx-1 text--darken-4" @click="filter2('Inactive')">
+          <v-icon left small>mdi-satellite-variant</v-icon>
+          <span class="caption">Inactive</span>
         </v-btn>
       </v-layout>
       <v-layout row wrap>
@@ -87,12 +103,25 @@ export default {
 
       this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => conf.mode == mode).length > 0)
     },
+    filter2(status) {
+      console.log(status)
+      if (status === null) {
+        this.satellites = this.origData;
+        return
+      }
+      this.satellites = this.origData.filter((sat => sat.status == status))
+    },
+    filter3(freq_min,freq_max) {
+      console.log(freq_min,freq_max)
+      this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => ( (freq_min < conf.freq )) && (conf.freq < freq_max) ).length > 0)
+    },
     formatLaunchDate(date){
       return moment(date).format('lll');
     }
   },
   
 }
+
 </script>
 
 <style>
@@ -100,16 +129,25 @@ export default {
   margin: 10px 20px;
 }
 
-.LoRa {
-  background: #3cd1c2 !important;
+.Grey {
+  background: #7f7f7f !important;
 }
 
-.FSK {
-  background: #ffaa2c !important;
+.Supported {
+  background: #00C851 !important;
 }
 
-.GFSK9k6 {
-  background: #f83e70 !important;
+.Future {
+  background: #5dbecc  !important;
+}
+
+
+.Experimental {
+  background: #c4b152  !important;
+}
+
+.Inactive {
+  background: #c80013  !important;
 }
 
 .clickable:hover {
