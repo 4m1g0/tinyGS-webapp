@@ -35,6 +35,7 @@
        
         <v-card flat class="mr-5 my-3 grey--text text--darken-3">
           <v-card-text class="grey--text text--darken-3 mx-auto">
+            <a class="download-btn" :href="downloadUrl" download="packet.bin">Download</a>
             <h2 class="ma-2">Hexadecimal view</h2>
             <HexView :raw="base64ToArrayBuffer(packet.raw)"/>
           </v-card-text>
@@ -42,7 +43,7 @@
         <v-card v-if="packet.parsed" flat class="mr-5 my-3 pa-2 grey--text text--darken-3" style="overflow:auto;white-space: nowrap;max-height:600px;">
           <v-card-text class="grey--text text--darken-3 mx-auto">
             <h2 class="ma-2 mb-5">Raw parsed view</h2>
-            <json-viewer :expand-depth=0 boxed  :value="packet.parsed"></json-viewer>
+            <json-viewer copyable :expand-depth=0 boxed  :value="packet.parsed"></json-viewer>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -115,6 +116,11 @@ export default {
         }
         return bytes.buffer;
     },
+  },
+  computed: {
+    downloadUrl() {
+      return `data:application/pdf;base64,${this.packet.raw}`
+    }
   }
 }
 </script>
@@ -122,5 +128,12 @@ export default {
 <style>
 .jv-container .jv-code {
   padding: 4px 10px;
+}
+
+.download-btn {
+  position:absolute;
+  right:20px;
+  text-decoration: none;
+  color:rgb(84, 176, 212) !important;
 }
 </style>
