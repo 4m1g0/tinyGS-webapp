@@ -1,7 +1,7 @@
 <template>
   <v-card flat :class="`pa-7 clickable ${(station.status ? 'online' : 'offline')}`" :to="`/station/${station.name}@${station.userId}`">
   <v-layout row wrap>
-    <v-flex xs6 sm4 md3 lg2 xl1>
+    <v-flex xs6 sm4 md3 lg2 xl2>
       <h3 class="caption grey--text">Station Name</h3>
       <div ><strong>{{station.name}} </strong> </div>
     </v-flex>

@@ -119,7 +119,7 @@ export default {
   },
   computed: {
     downloadUrl() {
-      return `data:application/pdf;base64,${this.packet.raw}`
+      return `data:application/octet-stream;base64,${this.packet.raw}`
     }
   }
 }
