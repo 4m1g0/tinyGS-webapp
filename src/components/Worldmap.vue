@@ -14,6 +14,7 @@
 
       <l-marker v-for="satellite in satellites" :key="satellite.name" :lat-lng="[satellite.lat, satellite.lng]" :icon="satelliteIcon" @click="focusSatellite=satellite.name"> 
         <l-popup><h3><router-link :to='`/satellite/${satellite.name}`'>{{satellite.displayName}}</router-link></h3>Showing stations currently<br>listening to this satellite.</l-popup>
+        <l-tooltip :class="focusSatellite?'hidden':''" :options="{permanent: true, offset: [12,0], opacity: 0.8}" > {{satellite.displayName}}  </l-tooltip>
       </l-marker>
 
       <l-marker v-for="station in stations" :key="`${station.name}@${station.userId}`" :visible="!focusSatellite || focusSatellite == station.satellite" :lat-lng="station.location" :icon="(station.status == 0)?stationInactiveIcon:stationActiveIcon" :class="(station.status == 0)?'inactive':'active'" >
@@ -35,6 +36,7 @@ import {
   LTileLayer,
   LPopup,
   LMarker,
+  LTooltip
 } from "vue2-leaflet";
 import { icon } from "leaflet";
 const axios = require("axios");
@@ -47,7 +49,8 @@ export default {
     LMap,
     LTileLayer,
     LPopup,
-    LMarker
+    LMarker,
+    LTooltip
   },
   props: [
       "packet"
@@ -75,7 +78,7 @@ export default {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       stations: null,
       satellites: null,
-      focusSatellite: null
+      focusSatellite: null,
     };
   },
   beforeMount(){
@@ -106,7 +109,6 @@ export default {
       let root=this 
       return this.stations.filter((x)=>x.satellite==root.focusSatellite)
     }
-
   }
 
 };
@@ -123,5 +125,9 @@ export default {
 
   .leaflet-marker-icon[src*="station_icon_red.png"] {
     z-index: 199 !important;
+  }
+
+  .hidden {
+    display: none;
   }
 </style>
