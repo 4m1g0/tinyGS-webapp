@@ -20,8 +20,8 @@
             </div>
             <div v-if="packet.parsed && packet.template">
               <div v-if="packet.eclipseDepth">
-                <div v-if="packet.sunLit">Sat on Sun ☀️ Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º</div>
-                <div v-else>Sat on Umbra 🌌  Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º </div>              
+                <div v-if="packet.sunLit">Sat in Sun ☀️ Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º</div>
+                <div v-else>Sat in Umbra 🌌  Eclipse Depth: {{(packet.eclipseDepth).toFixed(2)}}º </div>
                 <div>Theoretical coverage {{(packet.footPrint).toFixed(0)}} km </div>
               </div><br>
               <DynamicTemplate :packet="packet" :customTemplate="packet.template" />
