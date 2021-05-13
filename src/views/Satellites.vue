@@ -1,41 +1,29 @@
 <template>
   <div class="satellites">
-    <!--<h1 class="subheading grey--text">Satellites</h1>-->
     <v-container class="my-5">
-      <v-layout row class="mx-3">
-        <v-btn small text color="grey" class="Supported mx-1 text--darken-4" @click="filter(null)">
-          <v-icon left small>mdi-filter-remove</v-icon>
-          <span class="caption">All</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(400,550)">
-          <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">433</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(800,950)">
-          <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">868-915</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Grey mx-1 text--darken-4" @click="filter3(2100,2500)">
-          <v-icon left small>mdi-radio</v-icon>
-          <span class="caption">2400</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Supported mx-1 text--darken-4" @click="filter2('Supported')">
-          <v-icon left small>mdi-satellite-variant</v-icon>
-          <span class="caption">Supported</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Future mx-1 text--darken-4" @click="filter2('Future')">
-          <v-icon left small>mdi-satellite-variant</v-icon>
-          <span class="caption">Future</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Experimental mx-1 text--darken-4" @click="filter2('Experimental')">
-          <v-icon left small>mdi-satellite-variant</v-icon>
-          <span class="caption">Experimental</span>
-        </v-btn>
-        <v-btn small text color="grey" class="Inactive mx-1 text--darken-4" @click="filter2('Inactive')">
-          <v-icon left small>mdi-satellite-variant</v-icon>
-          <span class="caption">Inactive</span>
-        </v-btn>
-      </v-layout>
+      <v-row class="ml-1">
+        <v-col cols="12" sm="12" md="4" lg="3" class="mt-1">
+          <v-text-field v-model="findTxt" hide-details outlined dense clearable label="Find" prepend-inner-icon="mdi-magnify"></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="4" lg="3">
+          <v-select v-model="statusSelect" :items="statusItems" label="Status" multiple chips hide-details clearable dense prepend-inner-icon="mdi-filter-menu" :menu-props="{ bottom: true, offsetY: true }">
+            <template v-slot:selection="data">
+              <v-chip :class="data.item" :key="JSON.stringify(data.item)" v-bind="data.attrs" :input-value="data.selected" @click:close="statusSelect.splice(statusSelect.indexOf(data.item), 1)" close >
+                {{ data.item }}
+              </v-chip>
+            </template>
+          </v-select>
+        </v-col>
+        <v-col cols="12" class="d-none d-md-block" md="4" lg="3">
+          <v-select v-model="freqSelect" :items="freqItems" label="Frequency" multiple hide-details chips clearable dense prepend-inner-icon="mdi-filter-menu" :menu-props="{ bottom: true, offsetY: true }">
+            <template v-slot:selection="data">
+              <v-chip :class="data.item" :key="JSON.stringify(data.item)" v-bind="data.attrs" :input-value="data.selected" @click:close="freqSelect.splice(statusSelect.indexOf(data.item), 1)" close >
+                {{ data.item }}
+              </v-chip>
+            </template>
+          </v-select>
+        </v-col>
+      </v-row>
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="sat in satellites" :key="sat.name">
           <v-card class="text-center ma-4 rounded-lg clickable" :to="`satellite/${sat.name}`">
@@ -80,7 +68,12 @@ export default {
   name: 'Satellites',
   data() {
     return {
-      satellites: [],
+      findTxt: "",
+      statusSelect: [],
+      statusItems: ['Supported', 'Future', 'Experimental', 'Inactive'],
+      freqSelect: [],
+      freqItems: ['433','868-915','2400'],
+
       origData: []
     }
   },
@@ -92,34 +85,43 @@ export default {
       const { data } = await axios.get("https://api.tinygs.com/v1/satellites");
       console.log(data);
       this.origData = data;
-      this.satellites = data;
-    },
-    filter(mode) {
-      console.log(mode)
-      if (mode === null) {
-        this.satellites = this.origData;
-        return
-      }
-
-      this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => conf.mode == mode).length > 0)
-    },
-    filter2(status) {
-      console.log(status)
-      if (status === null) {
-        this.satellites = this.origData;
-        return
-      }
-      this.satellites = this.origData.filter((sat => sat.status == status))
-    },
-    filter3(freq_min,freq_max) {
-      console.log(freq_min,freq_max)
-      this.satellites = this.origData.filter(sat => sat.configurations.filter(conf => ( (freq_min < conf.freq )) && (conf.freq < freq_max) ).length > 0)
     },
     formatLaunchDate(date){
       return moment(date).format('lll');
-    }
+    },
   },
-  
+  computed:{
+    satellites(){
+      if (!this.origData)
+        return null;
+      
+      let sats;
+      if (this.findTxt)
+        sats = this.origData.filter(s => s.name.toLowerCase().includes(this.findTxt.toLowerCase()) 
+                                    || s.displayName.toLowerCase().includes(this.findTxt.toLowerCase())
+                                    || s.longDescription.toLowerCase().includes(this.findTxt.toLowerCase()))
+      else
+        sats = this.origData
+      
+      if (this.statusSelect.length > 0)
+        sats = sats.filter(sat => this.statusSelect.includes(sat.status))
+
+      if (this.freqSelect.length > 0) {
+        let freq_min, freq_max;
+        if (this.freqSelect == '433') {
+          freq_min = 400; freq_max = 550;
+        } else if (this.freqSelect == '868-915') {
+          freq_min = 800; freq_max = 950;
+        } else if (this.freqSelect == '2400') {
+          freq_min = 2100; freq_max = 2500;
+        }
+
+        sats = sats.filter(sat => sat.configurations.filter(conf => freq_min < conf.freq && conf.freq < freq_max).length > 0)
+      }
+
+      return sats
+    }
+  }
 }
 
 </script>
@@ -129,25 +131,21 @@ export default {
   margin: 10px 20px;
 }
 
-.Grey {
-  background: #7f7f7f !important;
-}
-
 .Supported {
-  background: #00C851 !important;
+  background: #4CAF50 !important;
 }
 
 .Future {
-  background: #5dbecc  !important;
+  background: #82B1FF  !important;
 }
 
 
 .Experimental {
-  background: #c4b152  !important;
+  background: #FFC107  !important;
 }
 
 .Inactive {
-  background: #c80013  !important;
+  background: #FF5252  !important;
 }
 
 .clickable:hover {
