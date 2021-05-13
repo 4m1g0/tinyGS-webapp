@@ -13,7 +13,36 @@
           </v-alert>
         </div>
       </v-row>
+      <div style="padding-bottom:150px;"></div>
+      <v-footer class="mt-12 pa-3"
+        color="primary"
+        padless
+        absolute
+      >
+        <v-row
+          justify="center"
+          no-gutters
+        >
+          <v-btn
+            v-for="link in links"
+            :key="link.url"
+            color="white"
+            text
+            rounded
+            class="my-2 mx-1"
+            @click="navigate(link.url)"
 
+          >
+          <v-icon class="mr-2">{{link.icon}}</v-icon> {{link.name}}
+          </v-btn>
+          <v-col
+            class=" py-4 text-center white--text"
+            cols="12"
+          >
+            {{ new Date().getFullYear() }} — <strong>TinyGS</strong>
+          </v-col>
+        </v-row>
+      </v-footer>
     </v-main>
   </v-app>
 </template>
@@ -31,7 +60,13 @@ export default {
   data() {
     return {
       user: null,
-      loginError: false
+      loginError: false,
+      links: [
+        {icon:"mdi-github", name:' GitHub',url:"https://github.com/G4lile0/tinyGS"},
+        {icon:"mdi-file-document-multiple-outline", name:' Wiki',url:"https://github.com/G4lile0/tinyGS/wiki"},
+        {icon:"mdi-map-marker-question-outline", name:' FAQ',url:"https://github.com/G4lile0/tinyGS/wiki/FAQ"},
+        {icon:"mdi-forum", name:' Telegram',url:"https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q"},
+      ],
     }
   },
   mounted() {

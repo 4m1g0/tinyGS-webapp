@@ -61,34 +61,6 @@
       <p>Join out <a href="https://t.me/joinchat/DmYSElZahiJGwHX6jCzB3Q">Telegram Channel</a>, visit our <a href="https://github.com/G4lile0/tinyGS">GitHub Page</a> and build your station.</p>
 
     </v-container>
-    <v-footer class="mt-6 pa-3"
-    color="primary"
-    padless
-  >
-    <v-row
-      justify="center"
-      no-gutters
-    >
-      <v-btn
-        v-for="link in links"
-        :key="link.url"
-        color="white"
-        text
-        rounded
-        class="my-2 mx-1"
-        @click="navigate(link.url)"
-
-      >
-      <v-icon class="mr-2">{{link.icon}}</v-icon> {{link.name}}
-      </v-btn>
-      <v-col
-        class=" py-4 text-center white--text"
-        cols="12"
-      >
-        {{ new Date().getFullYear() }} — <strong>TinyGS</strong>
-      </v-col>
-    </v-row>
-  </v-footer>
       
   </v-container>
 </template>
