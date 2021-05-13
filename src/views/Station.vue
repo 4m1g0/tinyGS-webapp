@@ -56,6 +56,7 @@
               <v-flex pa-2 xs4 sm4 md4 lg3 xl3 v-if="isCurrentUser(station.userId)">
                 <v-btn :disabled="txDisabled||!station.tx" @click="sendTest()" color="primary">Transmit test frame</v-btn>
               </v-flex>
+              <v-checkbox v-if="isCurrentUser(station.userId) " v-model="base64Cb" label="Base 64 encoded"></v-checkbox>
             </v-layout>
           </v-card-text>
         </v-card>
@@ -126,7 +127,8 @@ export default {
       txStr: "",
       txDisabled: false,
       snackbar: {text:"", show:false},
-      customTemplates: null,   
+      customTemplates: null,
+      base64Cb: false
     }
   },
   beforeMount() {
@@ -170,7 +172,7 @@ export default {
       setTimeout(() => this.txDisabled = false , 1000);
       this.txDisabled = true;
       let params = {
-        tx: this.txStr
+        tx: (this.base64Cb?this.txStr:btoa(this.txStr))
       }
       let config = {
         headers: {
@@ -180,7 +182,7 @@ export default {
       }
       //console.log(this.modemConf);
       try {
-        await axios.post(`https://api.tinygs.com/v1/station/${this.$route.params.id}/tx`, params, config);
+        await axios.post(`https://api.tinygs.com/v2/station/${this.$route.params.id}/tx`, params, config);
       } catch (err) {
         console.log(JSON.stringify(err))
       }
