@@ -101,7 +101,10 @@ export default {
       }
       
       // put authenticate and save token and remove query string -> this.$router.push(this.$route.path)
-    }
+    },
+    navigate(l){
+      window.location = l;
+    },
   }
 };
 </script>

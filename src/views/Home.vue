@@ -90,9 +90,6 @@ export default {
     this.getStatistics()
   },
   methods: {
-    navigate(l){
-      window.location = l;
-    },
     async getStatistics() {
       const { data } = await axios.get("https://api.tinygs.com/v1/statistics");
       console.log(data);
